@@ -5,10 +5,22 @@ function oneTrace() {
       <img className="rounded-lg w-24" src="horus-eye.png"/>
     </header>
     <main className="p-5" height="1000px">
-      <div className="flex justify-end">
-
+      <div className="inline">
+        <button class="w-36 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+          Return
+        </button>
+        <div className="bg-blue-500 p-3 text-white float-right">
+            I am a trace ID 
+        </div>
       </div>
-      <div className="mt-5 justify-center">
+      <div className="mt-5 flex h-full w-full">
+        <div className="bg-red-200 p-10 w-2/3 mr-5">
+          I am a beautiful waterfall
+        </div>
+        <div className="bg-green-200 p-10 w-1/3">
+          I am the smaller attribute table
+        </div>
+        
 
       </div>
     </main>
