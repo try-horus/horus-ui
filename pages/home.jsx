@@ -1,5 +1,44 @@
 import LineChart from "./charts/LineChart.jsx"
 
+const rpsData = [
+  {
+    "id": "Requests Per Day",
+    "color": "hsl(65, 70%, 50%)",
+    "data": [
+      { "x": new Date('July 20, 21 00:20:18'), "y": 7 },
+      { "x": new Date('July 27, 21 00:22:18'), "y": 2 },
+      { "x": new Date("2021-11-04 17:24:35.131"), "y": 13 },
+      { "x": new Date(1636413980587), "y": 6 }
+    ]
+  }
+]
+  
+const epsData = [
+  {
+    "id": "Errors Per Day",
+    "color": "hsl(65, 70%, 50%)",
+    "data": [
+      { "x": new Date('July 20, 21 00:20:18'), "y": 0 },
+      { "x": new Date('July 27, 21 00:22:18'), "y": 1 },
+      { "x": new Date("2021-11-04 17:24:35.131"), "y": 2 },
+      { "x": new Date(1636413980587), "y": 1 }
+    ]
+  }
+]
+
+const latencyData = [
+  {
+    "id": "Latency",
+    "color": "hsl(65, 70%, 50%)",
+    "data": [
+      { "x": new Date('July 20, 21 00:20:18'), "y": 200 },
+      { "x": new Date('July 27, 21 00:22:18'), "y": 200 },
+      { "x": new Date("2021-11-04 17:24:35.131"), "y": 200 },
+      { "x": new Date(1636413980587), "y": 250 }
+    ]
+  }
+]
+
 function About() {
   return (
     <div className="m-3">
@@ -21,14 +60,14 @@ function About() {
         </form>
       </div>
       <div className="mt-5 justify-center">
-        <div className="bg-blue-400 p-5 h-screen">
-          <LineChart />
+        <div className="p-5">
+          <LineChart data={rpsData} schemeColour={"accent"}/>
         </div>
-        <div className="bg-red-400 p-5">
-          <canvas id="EPS" ></canvas>
+        <div className="p-5">
+          <LineChart data={epsData} schemeColour={"set1"}/>
         </div>
-        <div className="bg-green-400 p-10 flex">
-          <canvas id="Latency" ></canvas>
+        <div className="p-5">
+          <LineChart data={latencyData} schemeColour={"paired"} />
         </div>
       </div>
     </main>

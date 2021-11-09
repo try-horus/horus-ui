@@ -1,19 +1,7 @@
 import { ResponsiveLine } from '@nivo/line'
 
-const data = [
-          {
-            "id": "Requests Per Day",
-            "color": "hsl(65, 70%, 50%)",
-            "data": [
-              { "x": new Date('July 20, 21 00:20:18'), "y": 7 },
-              { "x": new Date('July 27, 21 00:22:18'), "y": 2 },
-              { "x": new Date("2021-11-04 17:24:35.131"), "y": 13 },
-              { "x": new Date(1636413980587), "y": 6 }
-            ]
-          }
-        ]
-
-const LineChart = () => {
+const LineChart = ({ data , schemeColour }) => {
+    console.log(schemeColour)
     return (
       <div style={{ height: 500 }}>
         <ResponsiveLine
@@ -49,7 +37,7 @@ const LineChart = () => {
             legendOffset: -40,
             legendPosition: 'middle'
         }}
-        colors={{ scheme: 'nivo' }}
+        colors={{ scheme: schemeColour }}
         pointSize={10}
         pointColor={{ theme: 'background' }}
         pointBorderWidth={2}
