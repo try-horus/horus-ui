@@ -1,3 +1,8 @@
+import BarChart from "./charts/BarChart.jsx"
+import WaterfallChart from "./charts/WaterfallChart.tsx"
+import PieChart from "./charts/PieChart.jsx"
+
+
 function oneTrace() {
   return (
     <div className="m-3">
@@ -14,11 +19,11 @@ function oneTrace() {
         </div>
       </div>
       <div className="mt-5 flex h-full w-full">
-        <div className="bg-red-200 p-10 w-2/3 mr-5">
-          I am a beautiful waterfall
+        <div className="bg-white p-10 w-2/3 mr-5">
+          <PieChart />
         </div>
         <div className="bg-green-200 p-10 w-1/3">
-          I am the smaller attribute table
+          I am the smaller attribute table 
         </div>
         
 
