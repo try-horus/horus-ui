@@ -1,7 +1,6 @@
 import { ResponsiveLine } from '@nivo/line'
 
 const LineChart = ({ data , schemeColour }) => {
-    console.log(schemeColour)
     return (
       <div style={{ height: 500 }}>
         <ResponsiveLine
