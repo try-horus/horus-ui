@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 
 function About() {
   const [ timeFrame, setTimeframe ] = useState("15 minutes")
-  const [ rpsData, setRPSData ] = useState(fifteenMins)
+  const [ rpsData, setRPSData ] = useState(initialRPS)
   // const [ epsData, setEPSData ] = useState("15 minutes")
   // const [ latencyData, setLatencyData ] = useState("15 minutes")
 
@@ -27,6 +27,10 @@ function About() {
   const SQLRPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
     const response = await axios.get(`http://localhost:5000/rps-metric?timeframe=${query}`)
+    if (response.data[0].data.length === 0) { 
+      alert("There are no available data points for this timeframe. Please select a different timeframe.") 
+    } 
+    
     setRPSData(response.data)
   }
 
@@ -76,7 +80,7 @@ function About() {
     <main className="p-5" height="1000px">
       <div className="flex justify-end">
         <form className="bg-blue-300 p-4 rounded-lg" action="#">
-          <label for="timeframe">Timeframe</label>
+          <label for="timeframe">Timeframe: </label>
           <select name="timeframe" id="timeframe" onChange={(e) => handleTimeFrameSelect(e)}>
             <option value="15 minutes">15 minutes</option>
             <option value="1 hour">1 hour</option>
@@ -90,6 +94,7 @@ function About() {
         <div className="p-5">
           <LineChart data={rpsData} schemeColour={"accent"}/>
         </div>
+        <p className="text-sm text-gray-400 text-center">*Note: if the graph doesn’t seem to refresh when selecting a wider timeframe, it’s likely that you don’t have data that goes back that far. Please check your database dates.</p>
 {/*        <div className="p-5">
           <LineChart data={epsData} schemeColour={"set1"}/>
         </div>
@@ -103,16 +108,11 @@ function About() {
 }
 
 
-const fifteenMins = [
+const initialRPS = [
   {
-    "id": "Requests Per Day",
+    "id": "initial rps",
     "color": "hsl(65, 70%, 50%)",
     "data": [
-      { "x": new Date('July 20, 21 00:20:18'), "y": 7 },
-      { "x": new Date('July 20, 21 00:22:19'), "y": 2 },
-      { "x": new Date('July 20, 21 00:33:20'), "y": 4 },
-      { "x": new Date('July 20, 21 00:34:23'), "y": 1 },
-      { "x": new Date('July 20, 21 00:35:23'), "y": 5 },
     ]
   }
 ]

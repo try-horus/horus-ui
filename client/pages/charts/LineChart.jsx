@@ -5,30 +5,27 @@ const LineChart = ({ data , schemeColour }) => {
       <div style={{ height: 500 }}>
         <ResponsiveLine
         data={data}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 170, bottom: 50, left: 60 }}
         xScale={{ format: "%Y-%m-%dT%H:%M:%S.%L%Z", type: "time" }}
-        xFormat="time:%Y-%m-%dT%H:%M:%S.%L%Z"
+        xFormat="time:%Y-%m-%d %H:%M:%S"
         yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
-        yFormat=" >-.2f"
+        yFormat=" >-.0d"
         axisTop={null}
         axisRight={null}
         axisBottom={{
             format: "%b %d %H%:%M:%S",
-            // orient: 'bottom',
-            // tickSize: 5,
-            // tickPadding: 5,
-            // tickRotation: 0,
+            orient: 'bottom',
             tickValues: 6,
-            legend: 'time scale',
-            legendOffset: -12,
-            // legendPosition: 'middle'
+            legend: 'Time',
+            legendOffset: 40,
+            legendPosition: 'middle'
         }}
         axisLeft={{
             orient: 'left',
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'count',
+            legend: 'Count',
             legendOffset: -40,
             legendPosition: 'middle'
         }}
@@ -38,10 +35,18 @@ const LineChart = ({ data , schemeColour }) => {
         pointBorderWidth={2}
         pointBorderColor={{ from: 'serieColor' }}
         pointLabelYOffset={-12}
+        tooltip={point => { 
+            return ( 
+            <>
+            <div>Time: {point.point.data.xFormatted}</div>
+            <div>Value: {point.point.data.yFormatted}</div> 
+            </>)
+            }
+        }
         useMesh={true}
         legends={[
             {
-                anchor: 'bottom-right',
+                anchor: 'top-right',
                 direction: 'column',
                 justify: false,
                 translateX: 100,

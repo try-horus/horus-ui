@@ -9,7 +9,7 @@ const formatRPSMetrics = (metricRows) => {
 
   return [
     {
-      "id": "Requests Per Day",
+      "id": "Requests Per Second",
       "color": "hsl(65, 70%, 50%)",
       "data": newData
     }
