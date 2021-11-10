@@ -1,6 +1,6 @@
 const express = require('express');
 const { Client } = require('pg')
-const formatRPSMetrics = require('./utils/formatRPSMetrics')
+const { formatRPSMetrics, formatRPSQuery } = require('./utils/formatRPS')
 require('dotenv').config();
 
 const client = new Client({
@@ -9,9 +9,10 @@ const client = new Client({
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
-})
+})  
  
-client.connect()
+client.connect() 
+// need to add client.end() somewhere
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -24,12 +25,14 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use('/rps-metric', async (req, res, next) => {
-  let response = await client.query('SELECT * FROM rps LIMIT 5;')
+app.use('/rps-metric/', async (req, res, next) => {  
+  const timeframe = req.query.timeframe
+  if (!timeframe) return
+  let response = await client.query(formatRPSQuery(timeframe))
+
   let formattedResults = formatRPSMetrics(response.rows)
-  console.log(formattedResults)
   res.send(formattedResults)
-  await client.end()
+  //await client.end()
 });
   
 // Error Handling

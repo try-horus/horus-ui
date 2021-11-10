@@ -6,12 +6,8 @@ const LineChart = ({ data , schemeColour }) => {
         <ResponsiveLine
         data={data}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        xScale={{ 
-            "type": "time", 
-            "format": "%Y-%m-%d %H:%M:%S", 
-            "precision": "minute" 
-        }}
-        xFormat="time:%Y-%m-%d"
+        xScale={{ format: "%Y-%m-%dT%H:%M:%S.%L%Z", type: "time" }}
+        xFormat="time:%Y-%m-%dT%H:%M:%S.%L%Z"
         yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
         yFormat=" >-.2f"
         axisTop={null}

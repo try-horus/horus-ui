@@ -1,3 +1,5 @@
+const axios = require("axios")
+
 import LineChart from "./charts/LineChart.jsx"
 import { useState, useEffect } from "react"
 
@@ -5,10 +7,10 @@ import { useState, useEffect } from "react"
 function About() {
   const [ timeFrame, setTimeframe ] = useState("15 minutes")
   const [ rpsData, setRPSData ] = useState(fifteenMins)
-  const [ epsData, setEPSData ] = useState("15 minutes")
-  const [ latencyData, setLatencyData ] = useState("15 minutes")
+  // const [ epsData, setEPSData ] = useState("15 minutes")
+  // const [ latencyData, setLatencyData ] = useState("15 minutes")
 
-  const handleTimeFrameSelect = (e) => {
+  const handleTimeFrameSelect = (e) => { 
     setTimeframe(e.target.value)
   }
 
@@ -18,66 +20,53 @@ function About() {
 
   const getSQLforTimeFrame = () => {
     SQLRPS(timeFrame)
-    SQLEPS(timeFrame)
-    SQLLatency(timeFrame)
+    // SQLEPS(timeFrame)
+    // SQLLatency(timeFrame)
   }
 
-  const SQLRPS = (timeframe) => {
-    // GENERATE DYNAMIC SQL STATEMENT USING A SWITCH CASE TO SET THE TIME VALUE TO 
-    // THE TIMEFRAME ARGUMENT
-    switch (timeFrame) {
-      case "15 minutes":
-        setRPSData(fifteenMins) 
-        break
-      case "1 hour":
-        setRPSData(oneHour)
-        break
-      case "4 hours":
-        setRPSData(fourHours)
-        break
-      case "24 hours":
-        setRPSData(twentyFourHours)
-        break
-    }
+  const SQLRPS = async (timeframe) => {
+    const query = timeframe.replace(" ", "-")
+    const response = await axios.get(`http://localhost:5000/rps-metric?timeframe=${query}`)
+    setRPSData(response.data)
   }
 
-  const SQLEPS = (timeframe) => {
-    // GENERATE DYNAMIC SQL STATEMENT USING A SWITCH CASE TO SET THE TIME VALUE TO 
-    // THE TIMEFRAME ARGUMENT
-    switch (timeFrame) {
-      case "15 minutes":
-        setEPSData(fifteenMins) 
-        break
-      case "1 hour":
-        setEPSData(oneHour)
-        break
-      case "4 hours":
-        setEPSData(fourHours)
-        break
-      case "24 hours":
-        setEPSData(twentyFourHours)
-        break
-    }
-  }
+  // const SQLEPS = (timeframe) => {
+  //   // GENERATE DYNAMIC SQL STATEMENT USING A SWITCH CASE TO SET THE TIME VALUE TO 
+  //   // THE TIMEFRAME ARGUMENT
+  //   switch (timeFrame) {
+  //     case "15 minutes":
+  //       setEPSData(fifteenMins) 
+  //       break
+  //     case "1 hour":
+  //       setEPSData(oneHour)
+  //       break
+  //     case "4 hours":
+  //       setEPSData(fourHours)
+  //       break
+  //     case "24 hours":
+  //       setEPSData(twentyFourHours)
+  //       break
+  //   }
+  // }
 
-  const SQLLatency = (timeframe) => {
-    // GENERATE DYNAMIC SQL STATEMENT USING A SWITCH CASE TO SET THE TIME VALUE TO 
-    // THE TIMEFRAME ARGUMENT
-    switch (timeFrame) {
-      case "15 minutes":
-        setLatencyData(fifteenMins) 
-        break
-      case "1 hour":
-        setLatencyData(oneHour)
-        break
-      case "4 hours":
-        setLatencyData(fourHours)
-        break
-      case "24 hours":
-        setLatencyData(twentyFourHours)
-        break
-    }
-  }
+  // const SQLLatency = (timeframe) => {
+  //   // GENERATE DYNAMIC SQL STATEMENT USING A SWITCH CASE TO SET THE TIME VALUE TO 
+  //   // THE TIMEFRAME ARGUMENT
+  //   switch (timeFrame) {
+  //     case "15 minutes":
+  //       setLatencyData(fifteenMins) 
+  //       break
+  //     case "1 hour":
+  //       setLatencyData(oneHour)
+  //       break
+  //     case "4 hours":
+  //       setLatencyData(fourHours)
+  //       break
+  //     case "24 hours":
+  //       setLatencyData(twentyFourHours)
+  //       break
+  //   }
+  // }
 
   return (
     <div className="m-3">
@@ -101,12 +90,12 @@ function About() {
         <div className="p-5">
           <LineChart data={rpsData} schemeColour={"accent"}/>
         </div>
-        <div className="p-5">
+{/*        <div className="p-5">
           <LineChart data={epsData} schemeColour={"set1"}/>
         </div>
         <div className="p-5">
           <LineChart data={latencyData} schemeColour={"paired"} />
-        </div>
+        </div>*/}
       </div>
     </main>
   </div>
