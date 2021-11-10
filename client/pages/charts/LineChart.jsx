@@ -7,7 +7,7 @@ const LineChart = ({ data , schemeColour }) => {
         data={data}
         margin={{ top: 50, right: 170, bottom: 50, left: 60 }}
         xScale={{ format: "%Y-%m-%dT%H:%M:%S.%L%Z", type: "time" }}
-        xFormat="time:%Y-%m-%d %H:%M:%S"
+        xFormat="time:%Y-%m-%d%H:%M:%S"
         yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
         yFormat=" >-.0d"
         axisTop={null}

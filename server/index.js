@@ -1,6 +1,7 @@
 const express = require('express');
 const { Client } = require('pg')
 const { formatRPSMetrics, formatRPSQuery } = require('./utils/formatRPS')
+const { formatEPSMetrics, formatEPSQuery } = require('./utils/formatEPS')
 require('dotenv').config();
 
 const client = new Client({
@@ -25,6 +26,8 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+
+// ROUTING:
 app.use('/rps-metric/', async (req, res, next) => {  
   const timeframe = req.query.timeframe
   if (!timeframe) return
@@ -32,10 +35,18 @@ app.use('/rps-metric/', async (req, res, next) => {
 
   let formattedResults = formatRPSMetrics(response.rows)
   res.send(formattedResults)
-  //await client.end()
 });
-  
-// Error Handling
+ 
+app.use('/rps-error/', async (req, res, next) => {  
+  const timeframe = req.query.timeframe
+  if (!timeframe) return
+  let response = await client.query(formatEPSQuery(timeframe))
+
+  let formattedResults = formatEPSMetrics(response.rows)
+  res.send(formattedResults)
+});
+
+// Error Handling:
 app.use((req, res, next) => {
   const error = new Error("Could not find this route.", 404);
   throw error;
@@ -49,7 +60,7 @@ app.use((err, req, res, next) => {
   res.json({ error: err.message || "An unknown error occured" });
 });
 
-// Starting the Server
+// Starting the Server:
 app.listen(port, () => {
   console.log(`Server running on port ${port}`)
 });

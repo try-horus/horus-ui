@@ -3,11 +3,10 @@ const axios = require("axios")
 import LineChart from "./charts/LineChart.jsx"
 import { useState, useEffect } from "react"
 
-
 function About() {
   const [ timeFrame, setTimeframe ] = useState("15 minutes")
-  const [ rpsData, setRPSData ] = useState(initialRPS)
-  // const [ epsData, setEPSData ] = useState("15 minutes")
+  const [ rpsData, setRPSData ] = useState(initialData)
+  const [ epsData, setEPSData ] = useState(initialData)
   // const [ latencyData, setLatencyData ] = useState("15 minutes")
 
   const handleTimeFrameSelect = (e) => { 
@@ -20,7 +19,7 @@ function About() {
 
   const getSQLforTimeFrame = () => {
     SQLRPS(timeFrame)
-    // SQLEPS(timeFrame)
+    SQLEPS(timeFrame)
     // SQLLatency(timeFrame)
   }
 
@@ -30,47 +29,15 @@ function About() {
     if (response.data[0].data.length === 0) { 
       alert("There are no available data points for this timeframe. Please select a different timeframe.") 
     } 
-    
     setRPSData(response.data)
   }
 
-  // const SQLEPS = (timeframe) => {
-  //   // GENERATE DYNAMIC SQL STATEMENT USING A SWITCH CASE TO SET THE TIME VALUE TO 
-  //   // THE TIMEFRAME ARGUMENT
-  //   switch (timeFrame) {
-  //     case "15 minutes":
-  //       setEPSData(fifteenMins) 
-  //       break
-  //     case "1 hour":
-  //       setEPSData(oneHour)
-  //       break
-  //     case "4 hours":
-  //       setEPSData(fourHours)
-  //       break
-  //     case "24 hours":
-  //       setEPSData(twentyFourHours)
-  //       break
-  //   }
-  // }
-
-  // const SQLLatency = (timeframe) => {
-  //   // GENERATE DYNAMIC SQL STATEMENT USING A SWITCH CASE TO SET THE TIME VALUE TO 
-  //   // THE TIMEFRAME ARGUMENT
-  //   switch (timeFrame) {
-  //     case "15 minutes":
-  //       setLatencyData(fifteenMins) 
-  //       break
-  //     case "1 hour":
-  //       setLatencyData(oneHour)
-  //       break
-  //     case "4 hours":
-  //       setLatencyData(fourHours)
-  //       break
-  //     case "24 hours":
-  //       setLatencyData(twentyFourHours)
-  //       break
-  //   }
-  // }
+  const SQLEPS = async (timeframe) => {
+    const query = timeframe.replace(" ", "-")
+    const response = await axios.get(`http://localhost:5000/rps-error?timeframe=${query}`)
+    console.log(response.data)
+    setEPSData(response.data)
+  }
 
   return (
     <div className="m-3">
@@ -94,13 +61,13 @@ function About() {
         <div className="p-5">
           <LineChart data={rpsData} schemeColour={"accent"}/>
         </div>
-        <p className="text-sm text-gray-400 text-center">*Note: if the graph doesn’t seem to refresh when selecting a wider timeframe, it’s likely that you don’t have data that goes back that far. Please check your database dates.</p>
-{/*        <div className="p-5">
+        <div className="p-5">
           <LineChart data={epsData} schemeColour={"set1"}/>
         </div>
-        <div className="p-5">
+        <p className="text-sm text-gray-400 text-center">*Note: if the graph doesn’t seem to refresh when selecting a wider timeframe, it’s likely that you don’t have data that goes back that far. Please check your database dates.</p>
+        {/* <div className="p-5">
           <LineChart data={latencyData} schemeColour={"paired"} />
-        </div>*/}
+        </div> */}
       </div>
     </main>
   </div>
@@ -108,7 +75,7 @@ function About() {
 }
 
 
-const initialRPS = [
+const initialData = [
   {
     "id": "initial rps",
     "color": "hsl(65, 70%, 50%)",
@@ -117,47 +84,5 @@ const initialRPS = [
   }
 ]
 
-
-const oneHour = [
-  {
-    "id": "Requests Per Day",
-    "color": "hsl(65, 70%, 50%)",
-    "data": [
-      { "x": new Date('July 20, 21 00:20:18'), "y": 7 },
-      { "x": new Date('July 20, 21 00:35:19'), "y": 2 },
-      { "x": new Date('July 20, 21 00:38:20'), "y": 4 },
-      { "x": new Date('July 20, 21 00:50:23'), "y": 1 },
-      { "x": new Date('July 20, 21 01:15:23'), "y": 5 },
-    ]
-  }
-]
-
-
-// TEST DATA:
-// const epsData = [
-//   {
-//     "id": "Errors Per Day",
-//     "color": "hsl(65, 70%, 50%)",
-//     "data": [
-//       { "x": new Date('July 20, 21 00:20:18'), "y": 0 },
-//       { "x": new Date('July 27, 21 00:22:18'), "y": 1 },
-//       { "x": new Date("2021-11-04 17:24:35.131"), "y": 2 },
-//       { "x": new Date(1636413980587), "y": 1 }
-//     ]
-//   }
-// ]
-
-// const latencyData = [
-//   {
-//     "id": "Latency",
-//     "color": "hsl(65, 70%, 50%)",
-//     "data": [
-//       { "x": new Date('July 20, 21 00:20:18'), "y": 200 },
-//       { "x": new Date('July 27, 21 00:22:18'), "y": 200 },
-//       { "x": new Date("2021-11-04 17:24:35.131"), "y": 200 },
-//       { "x": new Date(1636413980587), "y": 250 }
-//     ]
-//   }
-// ]
 
 export default About

@@ -1,20 +1,20 @@
-const formatRPSMetrics = (metricRows) => {
+const formatEPSMetrics = (errorRows) => {
   let newData = []
-  metricRows.forEach(row => {
-    let dataPoint = { x: new Date(row.time), y: row.requests || 0}
+  errorRows.forEach(row => {
+    let dataPoint = { x: new Date(row.time), y: row.errors || 0}
     newData.push(dataPoint)
   })
 
   return [
     {
-      "id": "Requests Per Second",
+      "id": "Errors Per Second",
       "color": "hsl(65, 70%, 50%)",
       "data": newData
     }
   ]
 }
 
-const formatRPSQuery = ( timeframe ) => {
+const formatEPSQuery = ( timeframe ) => {
   let queryTimeframe = timeframe.replace("-", " ")
 
   let queryString = `
@@ -26,8 +26,8 @@ const formatRPSQuery = ( timeframe ) => {
           WHEN lag(value) OVER w IS NULL THEN NULL
           ELSE value
         END
-      ) AS "requests"
-      FROM rps
+      ) AS "errors"
+      FROM eps
       WHERE time > NOW() - INTERVAL '${queryTimeframe}'
       WINDOW w AS (ORDER BY time)
       ORDER BY time;
@@ -36,4 +36,4 @@ const formatRPSQuery = ( timeframe ) => {
   return queryString
 }
 
-module.exports = { formatRPSMetrics, formatRPSQuery }
+module.exports = { formatEPSMetrics, formatEPSQuery }
