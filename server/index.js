@@ -32,7 +32,7 @@ app.use('/rps-metric/', async (req, res, next) => {
   const timeframe = req.query.timeframe
   if (!timeframe) return
   let response = await client.query(formatRPSQuery(timeframe))
-
+  console.log(response.rows)
   let formattedResults = formatRPSMetrics(response.rows)
   res.send(formattedResults)
 });

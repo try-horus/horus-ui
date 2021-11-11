@@ -7,7 +7,7 @@ function About() {
   const [ timeFrame, setTimeframe ] = useState("15 minutes")
   const [ rpsData, setRPSData ] = useState(initialData)
   const [ epsData, setEPSData ] = useState(initialData)
-  // const [ latencyData, setLatencyData ] = useState("15 minutes")
+  const [ latencyData, setLatencyData ] = useState(initialData)
 
   const handleTimeFrameSelect = (e) => { 
     setTimeframe(e.target.value)
@@ -20,7 +20,7 @@ function About() {
   const getSQLforTimeFrame = () => {
     SQLRPS(timeFrame)
     SQLEPS(timeFrame)
-    // SQLLatency(timeFrame)
+    SQLLatency(timeFrame)
   }
 
   const SQLRPS = async (timeframe) => {
@@ -37,6 +37,13 @@ function About() {
     const response = await axios.get(`http://localhost:5000/rps-error?timeframe=${query}`)
     console.log(response.data)
     setEPSData(response.data)
+  }
+
+  const SQLLatency = async (timeframe) => {
+    const query = timeframe.replace(" ", "-")
+    const response = await axios.get(`http://localhost:5000/latency?timeframe=${query}`)
+    console.log(response.data)
+    setLatencyData(response.data)
   }
 
   return (
@@ -65,15 +72,14 @@ function About() {
           <LineChart data={epsData} schemeColour={"set1"}/>
         </div>
         <p className="text-sm text-gray-400 text-center">*Note: if the graph doesn’t seem to refresh when selecting a wider timeframe, it’s likely that you don’t have data that goes back that far. Please check your database dates.</p>
-        {/* <div className="p-5">
+        <div className="p-5">
           <LineChart data={latencyData} schemeColour={"paired"} />
-        </div> */}
+        </div>
       </div>
     </main>
   </div>
   )
 }
-
 
 const initialData = [
   {
@@ -83,6 +89,5 @@ const initialData = [
     ]
   }
 ]
-
 
 export default About
