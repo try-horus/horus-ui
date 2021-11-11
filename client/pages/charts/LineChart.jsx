@@ -29,7 +29,7 @@ const LineChart = ({ data , schemeColour }) => {
             legendOffset: -40,
             legendPosition: 'middle'
         }}
-        colors={{ scheme: schemeColour }}
+        colors={datum => datum.color}
         pointSize={10}
         pointColor={{ theme: 'background' }}
         pointBorderWidth={2}

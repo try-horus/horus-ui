@@ -67,12 +67,12 @@ function About() {
         <div className="p-5">
           <LineChart data={rpsData} schemeColour={"accent"}/>
         </div>
+        <p className="text-sm text-gray-400 text-center">*Note: if the graph doesn’t seem to refresh when selecting a wider timeframe, it’s likely that you don’t have data that goes back that far. Please check your database dates.</p>
         <div className="p-5">
           <LineChart data={epsData} schemeColour={"set1"}/>
         </div>
-        <p className="text-sm text-gray-400 text-center">*Note: if the graph doesn’t seem to refresh when selecting a wider timeframe, it’s likely that you don’t have data that goes back that far. Please check your database dates.</p>
         <div className="p-5">
-          <LineChart data={latencyData} schemeColour={"paired"} />
+          <LineChart data={latencyData} schemeColour={"datum"} />
         </div>
       </div>
     </main>

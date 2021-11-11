@@ -2,32 +2,32 @@ const formatLatencyMetrics = (latencyRows) => {
   let newData = {
       "500": {
           "id": "500",
-          "color": "hsl(65, 70%, 50%)",
+          "color": "hsla(101, 100%, 44%, 1)",
           "data": []
           }, 
       "1000": {
           "id": "1000", 
-          "color": "hsl(65, 70%, 50%)",
+          "color": "hsla(81, 100%, 44%, 1)",
           "data": []
           },
       "1500": {
           "id": "1500",
-          "color": "hsl(65, 70%, 50%)",
+          "color": "hsla(64, 100%, 44%, 1)",
           "data": []
           },
       "2000": {
           "id": "2000",
-          "color": "hsl(65, 70%, 50%)",
+          "color": "hsla(44, 100%, 44%, 1)",
           "data": []
           },
       "2500": {
           "id": "2500",
-          "color": "hsl(65, 70%, 50%)",
+          "color": "hsla(6, 100%, 44%, 1)",
           "data": []
           },
       "2500+":{
             "id": "2500+",
-            "color": "hsl(65, 70%, 50%)",
+            "color": "hsla(0, 100%, 56%, 1)",
             "data": []
           }
   }
