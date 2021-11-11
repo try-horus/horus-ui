@@ -1,6 +1,6 @@
 import { ResponsiveLine } from '@nivo/line'
 
-const LineChart = ({ data , schemeColour }) => {
+const LineChart = ({ data , style }) => {
     return (
       <div style={{ height: 500 }}>
         <ResponsiveLine
@@ -30,11 +30,12 @@ const LineChart = ({ data , schemeColour }) => {
             legendPosition: 'middle'
         }}
         colors={datum => datum.color}
-        pointSize={10}
+        pointSize={8}
         pointColor={{ theme: 'background' }}
         pointBorderWidth={2}
         pointBorderColor={{ from: 'serieColor' }}
         pointLabelYOffset={-12}
+        curve={style}
         tooltip={point => { 
             return ( 
             <div className="bg-white border-2 border-gray-400 p-2 text-xs">
