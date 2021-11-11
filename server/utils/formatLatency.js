@@ -68,7 +68,7 @@ const formatLatencyQuery = ( timeframe ) => {
         END
       ) AS "2500+"
       FROM latency
-      WHERE time > NOW() - INTERVAL '1 hour'
+      WHERE time > NOW() - INTERVAL '${queryTimeframe}'
       WINDOW w AS (ORDER BY time)
       ORDER BY time;
   `
