@@ -1,6 +1,7 @@
 const axios = require("axios")
 
 import LineChart from "./charts/LineChart.jsx"
+
 import { useState, useEffect } from "react"
 
 function About() {
@@ -41,7 +42,6 @@ function About() {
   const SQLLatency = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
     const response = await axios.get(`http://localhost:5000/latency?timeframe=${query}`)
-    console.log(response.data)
     setLatencyData(response.data)
   }
 

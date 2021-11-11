@@ -1,32 +1,32 @@
 const formatLatencyMetrics = (latencyRows) => {
   let newData = {
       "500": {
-          "id": "500",
+          "id": "500 ms",
           "color": "hsla(101, 100%, 44%, 1)",
           "data": []
           }, 
       "1000": {
-          "id": "1000", 
+          "id": "1000 ms", 
           "color": "hsla(81, 100%, 44%, 1)",
           "data": []
           },
       "1500": {
-          "id": "1500",
+          "id": "1500 ms",
           "color": "hsla(64, 100%, 44%, 1)",
           "data": []
           },
       "2000": {
-          "id": "2000",
+          "id": "2000 ms",
           "color": "hsla(44, 100%, 44%, 1)",
           "data": []
           },
       "2500": {
-          "id": "2500",
+          "id": "2500 ms",
           "color": "hsla(6, 100%, 44%, 1)",
           "data": []
           },
       "2500+":{
-            "id": "2500+",
+            "id": "2500+ ms",
             "color": "hsla(0, 100%, 56%, 1)",
             "data": []
           }
@@ -55,7 +55,7 @@ const formatLatencyQuery = ( timeframe ) => {
 
   let queryString = `
     SELECT time,
-      (
+      ( 
         CASE
           WHEN bucket_500 >= lag(bucket_500) OVER w
             THEN bucket_500 - lag(bucket_500) OVER w
