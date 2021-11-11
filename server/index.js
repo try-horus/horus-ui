@@ -2,7 +2,7 @@ const express = require('express');
 const { Client } = require('pg')
 const { formatRPSMetrics, formatRPSQuery } = require('./utils/formatRPS')
 const { formatEPSMetrics, formatEPSQuery } = require('./utils/formatEPS')
-const { formatLatencyMetrics, formatLatencyQuery } = require('./utils/formatEPS')
+const { formatLatencyMetrics, formatLatencyQuery } = require('./utils/formatLatency')
 
 require('dotenv').config();
 
@@ -28,13 +28,11 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-
 // ROUTING:
 app.use('/rps-metric/', async (req, res, next) => {  
   const timeframe = req.query.timeframe
   if (!timeframe) return
   let response = await client.query(formatRPSQuery(timeframe))
-  console.log(response.rows)
   let formattedResults = formatRPSMetrics(response.rows)
   res.send(formattedResults)
 });
@@ -43,7 +41,6 @@ app.use('/rps-error/', async (req, res, next) => {
   const timeframe = req.query.timeframe
   if (!timeframe) return
   let response = await client.query(formatEPSQuery(timeframe))
-
   let formattedResults = formatEPSMetrics(response.rows)
   res.send(formattedResults)
 });
@@ -52,8 +49,8 @@ app.use('/latency/', async (req, res, next) => {
   const timeframe = req.query.timeframe
   if (!timeframe) return
   let response = await client.query(formatLatencyQuery(timeframe))
-
   let formattedResults = formatLatencyMetrics(response.rows)
+  console.log(formattedResults)
   res.send(formattedResults)
 });
 

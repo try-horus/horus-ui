@@ -35,7 +35,6 @@ function About() {
   const SQLEPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
     const response = await axios.get(`http://localhost:5000/rps-error?timeframe=${query}`)
-    console.log(response.data)
     setEPSData(response.data)
   }
 

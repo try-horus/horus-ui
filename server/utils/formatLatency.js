@@ -1,17 +1,53 @@
 const formatLatencyMetrics = (latencyRows) => {
-  let newData = []
-  latencyRows.forEach(row => {
-    let dataPoint = { x: new Date(row.time), y: row.errors || 0}
-    newData.push(dataPoint)
+  let newData = {
+      "500": {
+          "id": "500",
+          "color": "hsl(65, 70%, 50%)",
+          "data": []
+          }, 
+      "1000": {
+          "id": "1000", 
+          "color": "hsl(65, 70%, 50%)",
+          "data": []
+          },
+      "1500": {
+          "id": "1500",
+          "color": "hsl(65, 70%, 50%)",
+          "data": []
+          },
+      "2000": {
+          "id": "2000",
+          "color": "hsl(65, 70%, 50%)",
+          "data": []
+          },
+      "2500": {
+          "id": "2500",
+          "color": "hsl(65, 70%, 50%)",
+          "data": []
+          },
+      "2500+":{
+            "id": "2500+",
+            "color": "hsl(65, 70%, 50%)",
+            "data": []
+          }
+  }
+
+  latencyRows.forEach(entry => {
+    Object.keys(entry).forEach(key => {
+      let newLatencyPoint = { x: entry.time, y: null }
+      if ( key === "time" ) return
+      newLatencyPoint.y = entry[key]
+      newData[key].data.push(newLatencyPoint)
+    })
   })
 
-  return [
-    {
-      "id": "Latency Data",
-      "color": "hsl(65, 70%, 50%)",
-      "data": newData
-    }
-  ]
+  let finalData = [] 
+  
+  Object.keys(newData).forEach(key => {
+    finalData.push(newData[key])
+  })
+
+  return finalData
 }
 
 const formatLatencyQuery = ( timeframe ) => {
