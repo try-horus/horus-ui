@@ -1,6 +1,23 @@
 import { ResponsiveLine } from '@nivo/line'
+import { useRouter } from 'next/router'
+
+
+
 
 const LineChart = ({ data , style }) => {
+    const router = useRouter()
+
+    const handleDataClick = (point) => {
+        const end = new Date(point.data.xFormatted).toISOString()
+        console.log(end)
+        const start = new Date(new Date(point.data.xFormatted) - 10000).toISOString()
+        console.log(start)
+        const href = `http://localhost:3000/traces?start=${start}&end=${end}`
+
+        router.push(href)
+    }
+
+
     return (
       <div style={{ height: 500 }}>
         <ResponsiveLine
@@ -29,6 +46,7 @@ const LineChart = ({ data , style }) => {
             legendOffset: -40,
             legendPosition: 'middle'
         }}
+        onClick={(point) => handleDataClick(point)}
         colors={datum => datum.color}
         pointSize={8}
         pointColor={{ theme: 'background' }}
