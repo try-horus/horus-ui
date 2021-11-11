@@ -27,10 +27,10 @@ function About() {
   const SQLRPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
     const response = await axios.get(`http://localhost:5000/rps-metric?timeframe=${query}`)
-    if (response.data[0].data.length === 0) { 
+    if (response.data[0].data.length === 0) {
       alert("There are no available data points for this timeframe. Please select a different timeframe.") 
-    } 
-    
+    }
+
     setRPSData(response.data)
   }
 
