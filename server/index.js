@@ -3,16 +3,23 @@ const { Client } = require('pg')
 const { formatRPSMetrics, formatRPSQuery } = require('./utils/formatRPS')
 require('dotenv').config();
 
+/*
 const client = new Client({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
-})  
- 
-client.connect() 
-// need to add client.end() somewhere
+})*/
+//const connectionString = process.env.PG
+
+const connectionString = "postgres://juan:juan@localhost:5432/horus"
+console.log(connectionString)
+const client = new Client({connectionString})
+client.connect()
+  .then(() => console.log("Connected successfully to the database"))
+  .catch(error => console.log(error))
+//TODO: need to add client.end() somewhere
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -34,6 +41,24 @@ app.use('/rps-metric/', async (req, res, next) => {
   res.send(formattedResults)
   //await client.end()
 });
+
+app.get('/traces/:traceId', async (req, res) => {
+
+  const traceId = req.params.traceId
+  const getAllSpansFromTraceText = 'SELECT * FROM spans WHERE trace_id=$1;'
+  let sortedArrayOfSpans
+
+  try {
+    const { rows } = await client.query(getAllSpansFromTraceText, [traceId])
+    sortedArrayOfSpans = rows.sort((a, b) => a.start_time_in_microseconds - b.start_time_in_microseconds)
+  } catch(err) {
+    console.log("\nError when reading from the database\n")
+    console.log(err.stack)
+    res.send([]).status(500)
+  }
+
+  res.json(sortedArrayOfSpans)
+})
   
 // Error Handling
 app.use((req, res, next) => {

@@ -3,61 +3,67 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from "react"
 const axios = require("axios")
 
+/*
+  75bf3617b49cedcd16b62dafc2d4bec1 with these one there is a lot of delay before movies sends the response
 
+  1526e5df651c2312fb171516dda90a87 this more normal, movies receives the request from dashboard and sends
+  the response with a delay of 10 miliseconds. It still looks like a lot of delay
 
-const data = {
-  labels: ["span1", "span2", "span3", "span4", "span5",],
-  datasets: [{
-    data: [[0,50], [1,4], [4,14], [14,29], [29,50]]
-  }]
-}
+  1e085415db8566562ea3a5d696a658c7 is a trace that has an error so the request never reaches movies.js
 
-const options = {
-  type: 'bar',
-  //responsive: true,
-  //maintainAspectRatio: false,
-  aspectRatio: 2,
-  indexAxis: 'y',
-  plugins:{   
-    legend: {
-      display: false
-    },
-  },
-  scales: {
-    x: {
-      title: {
-        display: true,
-        text: 'Span Duration (microseconds)',
-      }
-    },
-    y: {
-      title: {
-        display: true,
-        text: 'Span Id',
-      }
-    },
-  },
-  skipNull: true,
-
-  backgroundColor: [
-    'rgba(54, 127, 143, 1)',
-    'rgba(73, 173, 175, 1)',
-    'rgba(104, 194, 191, 1)',
-    'rgba(242, 188, 70, 1)',
-    'rgba(228, 135, 76, 1)',
-    'rgba(223, 86, 77, 1)',
-    'rgba(243, 224, 181, 1)',
-    'rgba(39, 29, 63, 1)',
-  ],
-
-  onClick(e) {
-    alert("Hello")
-  },
-}
+  
+  */
 
 const oneTrace = () => {
   const router = useRouter()
   const { traceId } = router.query
+
+  const [labels, setLabels] = useState(["span1", "span2", "span3", "span4", "span5"])
+  const [datasets, setDatasets] = useState([{
+    data: [[0,50], [1,4], [4,14], [14,29], [29,50]]
+  }])
+  const [listOfSortedSpans, setListOfSortedSpans] = useState([])
+
+  useEffect(async () => {
+    if(!router.isReady) return
+ 
+    try {
+      let response = await axios.get(`http://localhost:5000/traces/${traceId}`)
+      response = response.data
+      console.log(response)
+      if (response !== undefined) {
+      setLabels(response.map((span) => span.span_name))
+
+      //const latencyData = [[0, response[0]["span_latency"]]]
+      
+      /*
+        Get the starting time of the trace as a variable
+        In all the spans, the first value will be
+        startingTimeOfTheSpan - startingTimeOfTheTrace
+        The second, upper value will be:
+        startingTimeOfTheSpan - startingTimeOfTheTrace + latency
+      */
+      const latencyData = []
+      const startingTimeOfTheTrace = response[0]["start_time_in_microseconds"]
+      response.map((span) => {
+        const baseValue = span.start_time_in_microseconds - startingTimeOfTheTrace
+        latencyData.push([baseValue, baseValue + span.span_latency])
+      })
+      /*
+      response.map((span, i) => {
+        if (i !== 0) {
+          latencyData.push([lowerValue, span.span_latency])
+          start += span.span_latency
+        }
+      })*/
+      setDatasets([{ data: latencyData }])
+    }
+
+    } catch(e) {
+      console.log(e)
+    }
+  }, [router.isReady])
+
   return (
     <div className="m-3">
     <header className="bg-blue-500 text-white p-10">
@@ -74,7 +80,7 @@ const oneTrace = () => {
       </div>
       <div className="mt-5 flex h-full w-full">
         <div className="bg-white p-10 w-2/3 mr-5">
-          <WaterfallChart data={data} options={options} />
+          <WaterfallChart labels={labels} datasets={datasets} />
         </div>
         <div className="bg-green-200 p-10 w-1/3">
           I am the smaller attribute table 
