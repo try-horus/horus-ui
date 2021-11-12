@@ -11,8 +11,7 @@ function About() {
   const router = useRouter();
   const start = router.query.start;
   const end = router.query.end;
-  console.log(start, end)
-  
+
   useEffect(() => {
     console.log(start, end)
     axios
