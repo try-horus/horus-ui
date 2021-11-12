@@ -5,28 +5,13 @@ const formatLatencyMetrics = (latencyRows) => {
           "color": "hsla(101, 100%, 44%, 1)",
           "data": []
           }, 
-      "1000": {
-          "id": "1000 ms", 
-          "color": "hsla(81, 100%, 44%, 1)",
-          "data": []
-          },
       "1500": {
           "id": "1500 ms",
           "color": "hsla(64, 100%, 44%, 1)",
           "data": []
           },
-      "2000": {
-          "id": "2000 ms",
-          "color": "hsla(44, 100%, 44%, 1)",
-          "data": []
-          },
-      "2500": {
-          "id": "2500 ms",
-          "color": "hsla(6, 100%, 44%, 1)",
-          "data": []
-          },
-      "2500+":{
-            "id": "2500+ ms",
+      "1500+":{
+            "id": "1500+ ms",
             "color": "hsla(0, 100%, 56%, 1)",
             "data": []
           }
@@ -65,14 +50,6 @@ const formatLatencyQuery = ( timeframe ) => {
       ) AS "500",
       (
         CASE
-          WHEN bucket_1000 >= lag(bucket_1000) OVER w
-            THEN bucket_1000 - lag(bucket_1000) OVER w
-          WHEN lag(bucket_1000) OVER w IS NULL THEN NULL
-          ELSE bucket_1000
-        END
-      ) AS "1000",
-      (
-        CASE
           WHEN bucket_1500 >= lag(bucket_1500) OVER w
             THEN bucket_1500 - lag(bucket_1500) OVER w
           WHEN lag(bucket_1500) OVER w IS NULL THEN NULL
@@ -81,28 +58,12 @@ const formatLatencyQuery = ( timeframe ) => {
       ) AS "1500",
       (
         CASE
-          WHEN bucket_2000 >= lag(bucket_2000) OVER w
-            THEN bucket_2000 - lag(bucket_2000) OVER w
-          WHEN lag(bucket_2000) OVER w IS NULL THEN NULL
-          ELSE bucket_2000
+          WHEN bucket_over_1500 >= lag(bucket_over_1500) OVER w
+            THEN bucket_over_1500 - lag(bucket_over_1500) OVER w
+          WHEN lag(bucket_over_1500) OVER w IS NULL THEN NULL
+          ELSE bucket_over_1500
         END
-      ) AS "2000",
-      (
-        CASE
-          WHEN bucket_2500 >= lag(bucket_2500) OVER w
-            THEN bucket_2500 - lag(bucket_2500) OVER w
-          WHEN lag(bucket_2500) OVER w IS NULL THEN NULL
-          ELSE bucket_2500
-        END
-      ) AS "2500",
-      (
-        CASE
-          WHEN bucket_over_2500 >= lag(bucket_over_2500) OVER w
-            THEN bucket_over_2500 - lag(bucket_over_2500) OVER w
-          WHEN lag(bucket_over_2500) OVER w IS NULL THEN NULL
-          ELSE bucket_over_2500
-        END
-      ) AS "2500+"
+      ) AS "1500+"
       FROM latency
       WHERE time > NOW() - INTERVAL '${queryTimeframe}'
       WINDOW w AS (ORDER BY time)

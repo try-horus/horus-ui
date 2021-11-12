@@ -50,7 +50,6 @@ app.use('/latency/', async (req, res, next) => {
   if (!timeframe) return
   let response = await client.query(formatLatencyQuery(timeframe))
   let formattedResults = formatLatencyMetrics(response.rows)
-  console.log(formattedResults)
   res.send(formattedResults)
 });
 
