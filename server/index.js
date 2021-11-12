@@ -29,7 +29,6 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-<<<<<<< HEAD
 // ROUTING:
 
 app.use('/rps-metric/', async (req, res, next) => {
@@ -57,7 +56,7 @@ app.use('/latency/', async (req, res, next) => {
 });
 
 // Get data to populate the tracing table page
-app.get('/traces', async (req, res, next) => {
+app.get('/traces/', async (req, res, next) => {
   // Can I take out all objects out of query and construct a single query through it?
   // Worse UX in longer, less clear URL but easier dev experience
   // Would the SQL query even work?
@@ -89,7 +88,6 @@ app.get('/traces', async (req, res, next) => {
 });
 
 // Error Handling
-=======
 
 app.use((req, res, next) => {
   const error = new Error("Could not find this route.", 404);
