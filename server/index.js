@@ -36,26 +36,33 @@ app.use('/rps-metric/', async (req, res, next) => {
   //await client.end()
 });
 
+// Get data to populate the tracing table page
 app.get('/traces', async (req, res, next) => {
-  const delta = Number(req.query.delta) || 1440;
+  // Can I take out all objects out of query and construct a single query through it?
+  // Worse UX in longer, less clear URL but easier dev experience
+  // Would the SQL query even work?
+  const start = req.query.start;
+  const end = req.query.end;
 
-  const miliToSecond = 1000;
-  const secondsToMinute = 60;
+  // SELECT the elements
+  const selectQueryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN TO_TIMESTAMP('${start}', 'YYYY-MM-DD HH:MI:SS') AND TO_TIMESTAMP('${end}', 'YYYY-MM-DD HH:MI:SS') ORDER BY trace_start_time desc;`;
 
-  // Make SQL-legible dates
-  const start = new Date(new Date().getTime() - (miliToSecond * secondsToMinute * delta)).toISOString().split("T").join(" ");
-  const end = new Date().toISOString().split("T").join(" ");
+  // Count the number of elements
+  const countQueryString = ""
 
-  // Order desc to ensure correct order
-  const queryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}' ORDER BY trace_start_time desc;`;
+  const resultObj = {};
 
-  client
-    .query(queryString)
-    .then((resp) => {
-      res.json(resp.rows)
-      // client.end();
-    })
+  await client
+    .query(countQueryString)
+    .then(count => resultObj.count = count)
+    .catch(err => console.log(err))
+
+  await client
+    .query(selectQueryString)
+    .then(traces => resultObj.traces = traces.rows)
     .catch((err) => console.log(err));
+
+  res.send(resultObj)
 });
 
 // Error Handling
