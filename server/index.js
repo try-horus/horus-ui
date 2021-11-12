@@ -1,3 +1,4 @@
+const { query } = require('express');
 const express = require('express');
 const { Client } = require('pg')
 const { formatRPSMetrics, formatRPSQuery } = require('./utils/formatRPS')
@@ -12,13 +13,13 @@ const client = new Client({
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
-})  
- 
-client.connect() 
+})
+
+client.connect()
 // need to add client.end() somewhere
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -28,8 +29,10 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+<<<<<<< HEAD
 // ROUTING:
-app.use('/rps-metric/', async (req, res, next) => {  
+
+app.use('/rps-metric/', async (req, res, next) => {
   const timeframe = req.query.timeframe
   if (!timeframe) return
   let response = await client.query(formatRPSQuery(timeframe))
@@ -53,7 +56,41 @@ app.use('/latency/', async (req, res, next) => {
   res.send(formattedResults)
 });
 
-// Error Handling:
+// Get data to populate the tracing table page
+app.get('/traces', async (req, res, next) => {
+  // Can I take out all objects out of query and construct a single query through it?
+  // Worse UX in longer, less clear URL but easier dev experience
+  // Would the SQL query even work?
+  const start = req.query.start;
+  const end = req.query.end;
+
+  // SELECT the elements -> Still need to LIMIT and OFFSET
+  const selectQueryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}' ORDER BY trace_start_time desc;`;
+
+  // Count the number of elements
+  const countQueryString = `SELECT COUNT(*) FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}';`
+
+  const resultObj = {};
+
+  await client
+    .query(countQueryString)
+    .then(query => {
+      resultObj.count = Number(query.rows[0].count);
+    })
+    .catch(err => console.log(err))
+
+  await client
+    .query(selectQueryString)
+    .then(traces => resultObj.traces = traces.rows)
+    .catch((err) => console.log(err));
+
+  console.log(resultObj)
+  res.send(resultObj)
+});
+
+// Error Handling
+=======
+
 app.use((req, res, next) => {
   const error = new Error("Could not find this route.", 404);
   throw error;
