@@ -44,17 +44,19 @@ app.get('/traces', async (req, res, next) => {
   const start = req.query.start;
   const end = req.query.end;
 
-  // SELECT the elements
-  const selectQueryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN TO_TIMESTAMP('${start}', 'YYYY-MM-DD HH:MI:SS') AND TO_TIMESTAMP('${end}', 'YYYY-MM-DD HH:MI:SS') ORDER BY trace_start_time desc;`;
+  // SELECT the elements -> Still need to LIMIT and OFFSET
+  const selectQueryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}' ORDER BY trace_start_time desc;`;
 
   // Count the number of elements
-  const countQueryString = ""
+  const countQueryString = `SELECT COUNT(*) FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}';`
 
   const resultObj = {};
 
   await client
     .query(countQueryString)
-    .then(count => resultObj.count = count)
+    .then(query => {
+      resultObj.count = Number(query.rows[0].count);
+    })
     .catch(err => console.log(err))
 
   await client
@@ -62,6 +64,7 @@ app.get('/traces', async (req, res, next) => {
     .then(traces => resultObj.traces = traces.rows)
     .catch((err) => console.log(err));
 
+  console.log(resultObj)
   res.send(resultObj)
 });
 
