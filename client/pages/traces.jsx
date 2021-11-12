@@ -1,4 +1,5 @@
 import TraceTableRow from "../components/traceTableRow";
+import MyComponent from "../components/reactTable";
 import Pagination from "../components/pagination";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
@@ -12,19 +13,20 @@ function About() {
   const start = router.query.start;
   const end = router.query.end;
 
-  useEffect(() => {
-    console.log(start, end)
-    axios
-      .get(`http://localhost:5001/traces?start=${start}&end=${end}`)
-      .then(res => {
-        setCount(res.data.count || 0);
-        setTraces(res.data.traces || []);
-      });
-  }, [start, end]);
+  // useEffect(() => {
+  //   console.log(start, end)
+  //   axios
+  //     .get(`http://localhost:5001/traces?start=${start}&end=${end}`)
+  //     .then(res => {
+  //       setCount(res.data.count || 0);
+  //       setTraces(res.data.traces || []);
+  //     });
+  // }, [start, end]);
 
   return (
     <div className="my-5">
-      <p>The query returned {count} traces</p>
+      <MyComponent />
+      {/* <p>The query returned {count} traces</p>
       <table className="border-collapse border border-gray-500 mb-3 content-center ml-auto mr-auto">
         <thead>
           <tr>
@@ -36,10 +38,10 @@ function About() {
           </tr>
         </thead>
         <tbody>
-          {traces.map((trace) => <TraceTableRow data={trace} key={trace.trace_id}/>)}
+          //{traces.map((trace) => <TraceTableRow data={trace} key={trace.trace_id}/>)}
         </tbody>
       </table>
-        {/* <Pagination length={12} currentLink={currentLink} setCurrentLink={setCurrentLink} setTraces={setTraces} traces={traces} /> */}
+        <Pagination length={12} currentLink={currentLink} setCurrentLink={setCurrentLink} setTraces={setTraces} traces={traces} /> */}
     </div>
   )
 }
