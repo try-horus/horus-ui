@@ -82,7 +82,6 @@ app.get('/traces/', async (req, res, next) => {
 });
 
 // Error Handling
-
 app.use((req, res, next) => {
   const error = new Error("Could not find this route.", 404);
   throw error;
@@ -101,4 +100,4 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}`)
 });
 
-// SELECT * FROM traces WHERE trace_start_time BETWEEN '2021-11-12 15:04:15.442' AND '2021-11-12 15:12:12.392' ORDER BY trace_start_time desc;
+// http://localhost:3000/traces?start=2021-11-12%2015:03:15&end=2021-11-12%2015:12:13
