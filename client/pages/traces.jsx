@@ -13,19 +13,19 @@ function About() {
   const start = router.query.start;
   const end = router.query.end;
 
-  // useEffect(() => {
-  //   console.log(start, end)
-  //   axios
-  //     .get(`http://localhost:5001/traces?start=${start}&end=${end}`)
-  //     .then(res => {
-  //       setCount(res.data.count || 0);
-  //       setTraces(res.data.traces || []);
-  //     });
-  // }, [start, end]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5001/traces?start=${start}&end=${end}`)
+      .then(res => {
+        setCount(res.data.count || 0);
+        setTraces(res.data.traces || []);
+        console.log("This is traces", traces)
+      });
+  }, [start, end]);
 
   return (
     <div className="my-5">
-      <MyComponent />
+      <MyComponent /> 
       {/* <p>The query returned {count} traces</p>
       <table className="border-collapse border border-gray-500 mb-3 content-center ml-auto mr-auto">
         <thead>

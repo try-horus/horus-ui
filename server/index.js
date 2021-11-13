@@ -25,12 +25,11 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
-});
+}); 
 
 app.use(express.json());
 
 // ROUTING:
-
 app.use('/rps-metric/', async (req, res, next) => {
   const timeframe = req.query.timeframe
   if (!timeframe) return
@@ -57,16 +56,12 @@ app.use('/latency/', async (req, res, next) => {
 
 // Get data to populate the tracing table page
 app.get('/traces/', async (req, res, next) => {
-  // Can I take out all objects out of query and construct a single query through it?
-  // Worse UX in longer, less clear URL but easier dev experience
-  // Would the SQL query even work?
   const start = req.query.start;
   const end = req.query.end;
 
-  // SELECT the elements -> Still need to LIMIT and OFFSET
-  const selectQueryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}' ORDER BY trace_start_time desc;`;
+  if (start === "undefined" || end === "undefined") return 
 
-  // Count the number of elements
+  const selectQueryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}' ORDER BY trace_start_time desc;`;
   const countQueryString = `SELECT COUNT(*) FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}';`
 
   const resultObj = {};
@@ -83,7 +78,6 @@ app.get('/traces/', async (req, res, next) => {
     .then(traces => resultObj.traces = traces.rows)
     .catch((err) => console.log(err));
 
-  console.log(resultObj)
   res.send(resultObj)
 });
 
@@ -106,3 +100,5 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`)
 });
+
+// SELECT * FROM traces WHERE trace_start_time BETWEEN '2021-11-12 15:04:15.442' AND '2021-11-12 15:12:12.392' ORDER BY trace_start_time desc;
