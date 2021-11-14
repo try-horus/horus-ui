@@ -1,4 +1,8 @@
 import WaterfallChart from "../charts/WaterfallChart.jsx"
+import ButtonToGoBack from "../../components/ButtonToGoBack"
+import ButtonToFilterTraces from "../../components/ButtonToFilterTraces"
+import SpanTables from "../../components/SpanTables"
+
 import { useRouter } from 'next/router'
 import { useState, useEffect } from "react"
 const axios = require("axios")
@@ -11,18 +15,18 @@ const axios = require("axios")
 
   1e085415db8566562ea3a5d696a658c7 is a trace that has an error so the request never reaches movies.js
 
-  
   */
 
 const oneTrace = () => {
   const router = useRouter()
   const { traceId } = router.query
 
-  const [labels, setLabels] = useState(["span1", "span2", "span3", "span4", "span5"])
+  const [labels, setLabels] = useState([])
   const [datasets, setDatasets] = useState([{
-    data: [[0,50], [1,4], [4,14], [14,29], [29,50]]
+    data: []
   }])
   const [listOfSortedSpans, setListOfSortedSpans] = useState([])
+  const [clickedSpan, setClickedSpan] = useState({})
 
   useEffect(async () => {
     if(!router.isReady) return
@@ -30,11 +34,11 @@ const oneTrace = () => {
     try {
       let response = await axios.get(`http://localhost:5000/traces/${traceId}`)
       response = response.data
+      setListOfSortedSpans(response)
+      setClickedSpan(response[0])
       console.log(response)
       if (response !== undefined) {
       setLabels(response.map((span) => span.span_name))
-
-      //const latencyData = [[0, response[0]["span_latency"]]]
       
       /*
         Get the starting time of the trace as a variable
@@ -45,17 +49,13 @@ const oneTrace = () => {
       */
       const latencyData = []
       const startingTimeOfTheTrace = response[0]["start_time_in_microseconds"]
+      
+      // This code is okay, the problem is that there is empty space in the traces that
+      // is not accounted for
       response.map((span) => {
         const baseValue = span.start_time_in_microseconds - startingTimeOfTheTrace
         latencyData.push([baseValue, baseValue + span.span_latency])
       })
-      /*
-      response.map((span, i) => {
-        if (i !== 0) {
-          latencyData.push([lowerValue, span.span_latency])
-          start += span.span_latency
-        }
-      })*/
       setDatasets([{ data: latencyData }])
     }
 
@@ -64,6 +64,14 @@ const oneTrace = () => {
     }
   }, [router.isReady])
 
+  const handleClickOnChart = (event, arrayOfInfo) => {
+    if (arrayOfInfo[0] !== undefined) {
+      const index = arrayOfInfo[0]["index"]
+      setClickedSpan(listOfSortedSpans[index])
+    }
+  }
+
+  console.log(clickedSpan)
   return (
     <div className="m-3">
     <header className="bg-blue-500 text-white p-10">
@@ -71,25 +79,25 @@ const oneTrace = () => {
     </header> 
     <main className="p-5" height="1000px">
       <div className="inline">
-        <button className="w-36 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-          Return
-        </button>
+        <ButtonToGoBack />
+        <ButtonToFilterTraces />
         <div className="bg-blue-500 p-3 text-white float-right">
             Trace id: {traceId}
         </div>
       </div>
       <div className="mt-5 flex h-full w-full">
-        <div className="bg-white p-10 w-2/3 mr-5">
-          <WaterfallChart labels={labels} datasets={datasets} />
+        <div className="bg-white p-5 mr-0 h-full w-full">
+          <WaterfallChart labels={labels} datasets={datasets} handleClickOnChart={handleClickOnChart} />
         </div>
-        <div className="bg-green-200 p-10 w-1/3">
-          I am the smaller attribute table 
-        </div>
+        
       </div>
+      <SpanTables span={clickedSpan} />
     </main>
   </div>
   )
 }
+
+
 
 
 export default oneTrace
