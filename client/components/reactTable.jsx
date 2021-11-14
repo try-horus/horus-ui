@@ -1,5 +1,5 @@
 import DataTable from 'react-data-table-component';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const columns = [
@@ -26,6 +26,11 @@ const columns = [
     {
       name: 'Latency',
       selector: row => row.trace_latency,
+      sortable:true
+    },
+    {
+      name: 'Errors',
+      selector: row => String(row.contains_errors),
       sortable:true
     },
 ];
@@ -78,6 +83,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 );
 
   export const Filtering = ({data}) => {
+    console.log(data)
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = data.filter( 
@@ -88,7 +94,8 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
             String(item.root_span_host).includes(searchTerm) ||
             item.root_span_http_method.toLowerCase().includes(searchTerm) ||
             item.root_span_endpoint.toLowerCase().includes(searchTerm)  ||
-            String(item.trace_latency).includes(searchTerm)) 
+            String(item.trace_latency).includes(searchTerm)) ||
+            String(item.contains_errors).includes(searchTerm)
       }
     );
   

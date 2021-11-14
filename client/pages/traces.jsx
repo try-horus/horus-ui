@@ -13,14 +13,13 @@ function About() {
   const start = router.query.start;
   const end = router.query.end;
 
-  console.log(traces)
-
   useEffect(() => {
     axios
       .get(`http://localhost:5001/traces?start=${start}&end=${end}`)
       .then(res => {
         setCount(res.data.count || 0);
         setTraces(res.data.traces || []);
+        console.log(traces)
       });
   }, [start, end]);
 
