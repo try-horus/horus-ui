@@ -1,14 +1,24 @@
 import { ResponsiveLine } from '@nivo/line'
 import { useRouter } from 'next/router'
 
+const createQueryDatesStrings = (endTime) => {
+    let end = new Date(endTime)
+    let userTimezoneOffset = end.getTimezoneOffset() * 60000;
+    end = new Date(end.getTime() - userTimezoneOffset)
+    let start = new Date(end - 10000)
+    end = end.toISOString()
+    start = start.toISOString()
+
+    return [start, end]
+}
+
 const LineChart = ({ data , style }) => {
     const router = useRouter()
 
     const handleDataClick = (point) => {
-        const end = new Date(point.data.xFormatted).toISOString()
-        const start = new Date(new Date(point.data.xFormatted) - 10000).toISOString()
+        const [start, end] = createQueryDatesStrings(point.data.xFormatted)
+        console.log(start, end)
         const href = `http://localhost:3000/traces?start=${start}&end=${end}`
-
         router.push(href)
     }
 

@@ -32,11 +32,11 @@ const oneTrace = () => {
     if(!router.isReady) return
  
     try {
-      let response = await axios.get(`http://localhost:5000/traces/${traceId}`)
+      let response = await axios.get(`http://localhost:5001/traces/${traceId}`)
       response = response.data
       setListOfSortedSpans(response)
       setClickedSpan(response[0])
-      console.log(response)
+      console.log("RESPONSE", response)
       if (response !== undefined) {
       setLabels(response.map((span) => span.span_name))
       
@@ -53,7 +53,11 @@ const oneTrace = () => {
       // This code is okay, the problem is that there is empty space in the traces that
       // is not accounted for
       response.map((span) => {
+        console.log(span)
         const baseValue = span.start_time_in_microseconds - startingTimeOfTheTrace
+        console.log("AHHHHHHH", span.start_time_in_microseconds)
+        console.log("MORE AHHHH", startingTimeOfTheTrace)
+
         latencyData.push([baseValue, baseValue + span.span_latency])
       })
       setDatasets([{ data: latencyData }])
