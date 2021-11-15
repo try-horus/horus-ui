@@ -1,6 +1,8 @@
 const axios = require("axios")
 
-import LineChart from "./charts/LineChart.jsx"
+import Header from "../components/pageHeader.jsx"
+import TimeFrame from "../components/timeFrameForm.jsx"
+import Dashboard from "../components/Dashboard.jsx"
 
 import { useState, useEffect } from "react"
 
@@ -9,14 +11,21 @@ function About() {
   const [ rpsData, setRPSData ] = useState(initialData)
   const [ epsData, setEPSData ] = useState(initialData)
   const [ latencyData, setLatencyData ] = useState(initialData)
-
-  const handleTimeFrameSelect = (e) => { 
-    setTimeframe(e.target.value)
-  }
+  const [ refreshTime, setRefreshTime] = useState(Date.now())
+  const [ timeSinceUpdate, setTimeSinceUpdate ] = useState(Date.now())
+  const [ refreshClicked, setRefreshClicked ] = useState(false)
 
   useEffect(() => {
     getSQLforTimeFrame()
-  }, [timeFrame])
+    let interval = setInterval(() => {
+     setTimeSinceUpdate(Date.now()) 
+    }, 60000)
+    setRefreshTime(Date.now())
+    setRefreshClicked(false)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [timeFrame, refreshClicked])
 
   const getSQLforTimeFrame = () => {
     SQLRPS(timeFrame)
@@ -46,43 +55,31 @@ function About() {
   }
 
   return (
-    <div className="m-3">
-    <header className="bg-blue-500 text-white p-10">
-      <img className="rounded-lg w-24" src="horus-eye.png"/>
-    </header>
-    <main className="p-5" height="1000px">
-      <div className="flex justify-end">
-        <form className="bg-blue-300 p-4 rounded-lg" action="#">
-          <label for="timeframe">Timeframe: </label>
-          <select name="timeframe" id="timeframe" onChange={(e) => handleTimeFrameSelect(e)}>
-            <option value="15 minutes">15 minutes</option>
-            <option value="1 hour">1 hour</option>
-            <option value="4 hours">4 hours</option>
-            <option value="24 hours">24 hours</option>
-            <option value="1 week">1 week</option>
-          </select>
-        </form>
-      </div>
-      <div className="mt-5 justify-center">
-        <div className="p-5">
-          <LineChart data={rpsData} />
-        </div>
-        <p className="text-sm text-gray-400 text-center">*Note: if the graph doesn’t seem to refresh when selecting a wider timeframe, it’s likely that you don’t have data that goes back that far. Please check your database dates.</p>
-        <div className="p-5">
-          <LineChart data={epsData} />
-        </div>
-        <div className="p-5">
-          <LineChart data={latencyData} style={"natural"} />
-        </div>
-      </div>
-    </main>
-  </div>
+    <>
+      <Header />  
+      <main className="p-5">
+        <TimeFrame 
+          setTimeframe={setTimeframe} 
+          getSQLforTimeFrame={getSQLforTimeFrame}
+          setRefreshTime={setRefreshTime}
+          refreshTime={refreshTime}
+          setTimeSinceUpdate={setTimeSinceUpdate}
+          timeSinceUpdate={timeSinceUpdate}
+          setRefreshClicked={setRefreshClicked}
+          /> 
+        <Dashboard 
+          rpsData={rpsData} 
+          epsData={epsData} 
+          latencyData={latencyData}
+          />
+      </main>
+   </>
   )
 }
 
 const initialData = [
   {
-    "id": "initial rps",
+    "id": "initializing data",
     "color": "hsl(65, 70%, 50%)",
     "data": [
     ]

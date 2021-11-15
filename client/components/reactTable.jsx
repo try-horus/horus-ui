@@ -1,5 +1,5 @@
 import DataTable from 'react-data-table-component';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const columns = [

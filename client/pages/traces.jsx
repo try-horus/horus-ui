@@ -1,6 +1,4 @@
-import TraceTableRow from "../components/traceTableRow";
-import MyComponent from "../components/reactTable";
-import Pagination from "../components/pagination";
+import TraceTable from "../components/reactTable";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import axios from "axios";
@@ -26,7 +24,7 @@ function About() {
 
   return (
     <div >
-      <MyComponent data={traces}/> 
+      <TraceTable data={traces}/> 
     </div>
   )
 }
