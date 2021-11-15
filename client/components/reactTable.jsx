@@ -1,5 +1,7 @@
 import DataTable from 'react-data-table-component';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router'
+
 import styled from 'styled-components';
 
 const columns = [
@@ -78,6 +80,8 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 );
 
   export const Filtering = ({data}) => {
+    const router = useRouter()
+
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = data.filter( 
@@ -105,6 +109,13 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
       )
     }
 
+    const handleRowClick = (e) => {
+      const traceId = e.trace_id
+      console.log(traceId)
+      const href = `http://localhost:3000/traces/${traceId}`
+      router.push(href)
+    }
+
     return (
       <>
         <DataTable
@@ -115,6 +126,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
             subHeader
             subHeaderComponent={returnFilteredComponent()}
             dense
+            onRowClicked={handleRowClick}
         />
       </>
     );

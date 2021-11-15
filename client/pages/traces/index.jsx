@@ -1,6 +1,4 @@
-import TraceTableRow from "../../components/traceTableRow";
 import MyComponent from "../../components/reactTable";
-import Pagination from "../../components/pagination";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import axios from "axios";
@@ -12,8 +10,6 @@ function About() {
   const router = useRouter();
   const start = router.query.start;
   const end = router.query.end;
-
-  console.log(traces)
 
   useEffect(() => {
     axios
