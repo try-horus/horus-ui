@@ -1,6 +1,6 @@
-import TraceTableRow from "../components/traceTableRow";
-import MyComponent from "../components/reactTable";
-import Pagination from "../components/pagination";
+import TraceTableRow from "../../components/traceTableRow";
+import MyComponent from "../../components/reactTable";
+import Pagination from "../../components/pagination";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import axios from "axios";
