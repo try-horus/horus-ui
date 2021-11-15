@@ -12,7 +12,7 @@ const createQueryDatesStrings = (endTime) => {
     return [start, end]
 }
 
-const LineChart = ({ data , style }) => {
+const LineChart = ({ data , style, chartName }) => {
     const router = useRouter()
 
     const handleDataClick = (point) => {
@@ -24,7 +24,8 @@ const LineChart = ({ data , style }) => {
 
 
     return (
-      <div style={{ height: 500 }}>
+      <div className="container justify-center mb-14 mt-14" style={{ height: 500 }}>
+        <h1 className="bg-blue-300 p-3 rounded-lg text-2xl">{chartName}</h1>
         <ResponsiveLine
         data={data}
         margin={{ top: 50, right: 170, bottom: 50, left: 60 }}

@@ -38,7 +38,6 @@ function About() {
     const query = timeframe.replace(" ", "-")
     const response = await axios.get(`http://localhost:5001/rps-metric?timeframe=${query}`)
     setIsDataEmpty(response.data[0].data.length === 0)
-    console.log("YOU BETTAH BE FALSE", isDataEmpty)
     setRPSData(response.data)
   }
 
