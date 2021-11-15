@@ -7,6 +7,7 @@ const { formatLatencyMetrics, formatLatencyQuery } = require('./utils/formatLate
 
 require('dotenv').config();
 
+
 const client = new Client({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
@@ -15,8 +16,18 @@ const client = new Client({
   port: process.env.PGPORT,
 })
 
-client.connect()
 // need to add client.end() somewhere
+//const connectionString = process.env.PG
+
+// const connectionString = "postgres://juan:juan@localhost:5432/horus"
+// console.log(connectionString)
+// const client = new Client({connectionString})
+
+client.connect()
+  .then(() => console.log("Connected successfully to the database"))
+  .catch(error => console.log(error))
+//TODO: need to add client.end() somewhere
+
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -81,6 +92,24 @@ app.get('/traces/', async (req, res, next) => {
   res.send(resultObj)
 });
 
+app.get('/traces/:traceId', async (req, res) => {
+
+  const traceId = req.params.traceId
+  const getAllSpansFromTraceText = 'SELECT * FROM spans WHERE trace_id=$1;'
+  let sortedArrayOfSpans
+
+  try {
+    const { rows } = await client.query(getAllSpansFromTraceText, [traceId])
+    sortedArrayOfSpans = rows.sort((a, b) => a.start_time_in_microseconds - b.start_time_in_microseconds)
+  } catch(err) {
+    console.log("\nError when reading from the database\n")
+    console.log(err.stack)
+    res.send([]).status(500)
+  }
+
+  res.json(sortedArrayOfSpans)
+})
+  
 // Error Handling
 app.use((req, res, next) => {
   const error = new Error("Could not find this route.", 404);
@@ -99,5 +128,3 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`)
 });
-
-// http://localhost:3000/traces?start=2021-11-12%2015:03:15&end=2021-11-12%2015:12:13
