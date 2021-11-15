@@ -14,6 +14,7 @@ function About() {
   const [ refreshTime, setRefreshTime] = useState(Date.now())
   const [ timeSinceUpdate, setTimeSinceUpdate ] = useState(Date.now())
   const [ refreshClicked, setRefreshClicked ] = useState(false)
+  const [ isDataEmpty, setIsDataEmpty ] = useState(true)
 
   useEffect(() => {
     getSQLforTimeFrame()
@@ -36,9 +37,8 @@ function About() {
   const SQLRPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
     const response = await axios.get(`http://localhost:5001/rps-metric?timeframe=${query}`)
-    if (response.data[0].data.length === 0) { 
-      alert("There are no available data points for this timeframe. Please select a different timeframe.") 
-    } 
+    setIsDataEmpty(response.data[0].data.length === 0)
+    console.log("YOU BETTAH BE FALSE", isDataEmpty)
     setRPSData(response.data)
   }
 
@@ -67,6 +67,12 @@ function About() {
           timeSinceUpdate={timeSinceUpdate}
           setRefreshClicked={setRefreshClicked}
           /> 
+        {(isDataEmpty) 
+          ?  <div className="flex container justify-center">
+              <h1 className="bg-yellow-300 p-3 rounded-lg">There are no available data points for this timeframe. Please select a wider timeframe.</h1>
+            </div>
+          : null
+        }
         <Dashboard 
           rpsData={rpsData} 
           epsData={epsData} 
