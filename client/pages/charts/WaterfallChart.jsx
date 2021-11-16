@@ -28,12 +28,14 @@ const WaterfallChart = ({ labels, datasets, handleClickOnChart }) => {
         title: {
           display: true,
           text: 'Span Duration (microseconds)',
+          font: {size: 18}
         }
       },
       y: {
         title: {
           display: true,
           text: 'Span Name',
+          font: {size: 18}
         }
       },
     },
