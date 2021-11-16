@@ -1,4 +1,5 @@
 import TraceTable from "../../components/reactTable";
+import Header from "../../components/pageHeader"
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import axios from "axios";
@@ -22,6 +23,8 @@ function About() {
 
   return (
     <div >
+      <Header />
+      <h2 className="text-center text-4xl mt-8">Traces</h2>
       <TraceTable data={traces}/> 
     </div>
   )

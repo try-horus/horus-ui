@@ -38,32 +38,55 @@ const columns = [
 
 const TextField = styled.input`
 	height: 32px;
-	width: 200px;
-	border-radius: 3px;
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-	border: 1px solid #e5e5e5;
+	width: 210px;
+  margin: 1.25rem;
+	border-radius: 5px;
+	border: 2px solid #e5e5e5;
 	padding: 0 32px 0 16px;
 	&:hover {
 		cursor: pointer;
 	}
 `;
 
-
-const ClearButton = styled.button`
-	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-	border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;
-	height: 34px;
-	width: 32px;
-	text-align: center;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-`;
+const customStyles = {
+  title: {
+    style: {
+      fontColor: 'red',
+      fontWeight: '900',
+    }
+  },
+  rows: {
+    style: {
+      minHeight: '72px', // override the row height
+      "&:hover": {
+        cursor: "pointer",
+      }
+    }
+  },
+  headCells: {
+    style: {
+      fontSize: '15px',
+      fontWeight: '500',
+      textTransform: 'uppercase',
+      paddingLeft: '0 8px'
+    },
+  },
+  cells: {
+    style: {
+      fontSize: '13px',
+      paddingLeft: '0 8px',
+    },
+  },
+  tableWrapper: {
+    style:{
+      borderRadius: "25px",
+      border: "2px solid rgb(30, 64, 175)",
+      margin: "20px",
+      padding: "20px",
+      width: "95%"
+    } 
+  }
+};
 
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
@@ -71,15 +94,11 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 		<TextField
 			id="search"
 			type="text"
-			placeholder="Filter By Name"
+			placeholder="Filter By Trace Details"
 			aria-label="Search Input"
 			value={filterText}
 			onChange={onFilter}
 		/>
-
-		<ClearButton type="button" onClick={onClear}>
-			X
-		</ClearButton>
 	</>
 );
 
@@ -110,7 +129,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 
     const returnFilteredComponent = () => {
       return (
-        <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText}/>
+        <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
       )
     }
 
@@ -123,7 +142,6 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
     return (
       <>
         <DataTable
-            title="Traces"
             columns={columns}
             data={filteredItems}
             pagination
@@ -131,6 +149,8 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
             subHeaderComponent={returnFilteredComponent()}
             dense
             onRowClicked={handleRowClick}
+            className="rounded-lg"
+            customStyles={customStyles}
         />
       </>
     );

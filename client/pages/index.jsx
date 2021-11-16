@@ -57,6 +57,7 @@ function About() {
     <>
       <Header />  
       <main className="p-5">
+        <h2 className="text-center text-4xl">Metrics</h2>
         <TimeFrame 
           setTimeframe={setTimeframe} 
           getSQLforTimeFrame={getSQLforTimeFrame}
