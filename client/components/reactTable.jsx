@@ -89,7 +89,7 @@ const customStyles = {
 };
 
 
-const FilterComponent = ({ filterText, onFilter, onClear }) => (
+const FilterComponent = ({ filterText, onFilter}) => (
 	<>
 		<TextField
 			id="search"

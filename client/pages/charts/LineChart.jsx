@@ -53,6 +53,12 @@ const LineChart = ({ data , style, chartName }) => {
             legendPosition: 'middle'
         }}
         onClick={(point) => handleDataClick(point)}
+        onMouseEnter={(point, event) => {
+            event.target.style.cursor = "pointer"
+        }}
+        onMouseLeave={(point, event) => {
+            event.target.style.cursor = "default"
+        }}
         colors={datum => datum.color}
         pointSize={8}
         pointColor={{ theme: 'background' }}
