@@ -67,7 +67,7 @@ function About() {
           setRefreshClicked={setRefreshClicked}
           /> 
         {(isDataEmpty) 
-          ?  <div className="flex container justify-center">
+          ?  <div className="flex container justify-center mt-5">
               <h1 className="bg-yellow-300 p-3 rounded-lg">There are no available data points for this timeframe. Please select a wider timeframe.</h1>
             </div>
           : null

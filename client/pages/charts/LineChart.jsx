@@ -24,8 +24,8 @@ const LineChart = ({ data , style, chartName }) => {
 
 
     return (
-      <div className="container justify-center mb-14 mt-14" style={{ height: 500 }}>
-        <h1 className="bg-blue-300 p-3 rounded-lg text-2xl">{chartName}</h1>
+      <div className="container justify-center p-5 pb-16 my-14" style={{ height: 600 }}>
+        <h1 className="bg-blue-300 p-3 text-center rounded-lg text-2xl">{chartName}</h1>
         <ResponsiveLine
         data={data}
         margin={{ top: 50, right: 170, bottom: 50, left: 60 }}
@@ -78,7 +78,7 @@ const LineChart = ({ data , style, chartName }) => {
                 translateY: 0,
                 itemsSpacing: 0,
                 itemDirection: 'left-to-right',
-                itemWidth: 80,
+                itemWidth: 70,
                 itemHeight: 20,
                 itemOpacity: 0.75,
                 symbolSize: 12,

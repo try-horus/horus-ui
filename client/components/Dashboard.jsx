@@ -2,7 +2,7 @@ import LineChart from "../pages/charts/LineChart"
 
 function Dashboard( { rpsData, epsData, latencyData } ) {  
   return (
-    <div className="mt-5 justify-center">
+    <div className="mt-5 justify-center bg-gray-100 rounded-lg">
       <div className="px-5">
         <LineChart data={rpsData} chartName="Total Requests Per 10 Seconds"/>
       </div>
