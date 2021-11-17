@@ -64,7 +64,7 @@ const formatLatencyQuery = ( timeframe ) => {
           ELSE bucket_over_1500
         END
       ) AS "1500+"
-      FROM latency
+      FROM tsdb_latency
       WHERE time > NOW() - INTERVAL '${queryTimeframe}'
       WINDOW w AS (ORDER BY time)
       ORDER BY time;

@@ -27,7 +27,7 @@ const formatRPSQuery = ( timeframe ) => {
           ELSE value
         END
       ) AS "requests"
-      FROM rps
+      FROM tsdb_rps
       WHERE time > NOW() - INTERVAL '${queryTimeframe}'
       WINDOW w AS (ORDER BY time)
       ORDER BY time;

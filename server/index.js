@@ -73,8 +73,8 @@ app.get('/traces/', async (req, res, next) => {
 
   if (start === "undefined" || end === "undefined") return 
 
-  const selectQueryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}' ORDER BY trace_start_time desc;`;
-  const countQueryString = `SELECT COUNT(*) FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}';`
+  const selectQueryString = `SELECT * FROM tsdb_traces WHERE trace_start_time BETWEEN '${start}' AND '${end}' ORDER BY trace_start_time desc;`;
+  const countQueryString = `SELECT COUNT(*) FROM tsdb_traces WHERE trace_start_time BETWEEN '${start}' AND '${end}';`
 
   const resultObj = {};
 
@@ -96,7 +96,7 @@ app.get('/traces/', async (req, res, next) => {
 app.get('/traces/:traceId', async (req, res) => {
 
   const traceId = req.params.traceId
-  const getAllSpansFromTraceText = 'SELECT * FROM spans WHERE trace_id=$1;'
+  const getAllSpansFromTraceText = 'SELECT * FROM tsdb_spans WHERE trace_id=$1;'
   let sortedArrayOfSpans
 
   try {

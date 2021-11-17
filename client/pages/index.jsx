@@ -36,20 +36,20 @@ function About() {
 
   const SQLRPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://localhost:5001/rps-metric?timeframe=${query}`)
+    const response = await axios.get(`http://ui-server-container:5001/rps-metric?timeframe=${query}`)
     setIsDataEmpty(response.data[0].data.length === 0)
     setRPSData(response.data)
   }
 
   const SQLEPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://localhost:5001/rps-error?timeframe=${query}`)
+    const response = await axios.get(`http://ui-server-container:5001/rps-error?timeframe=${query}`)
     setEPSData(response.data)
   }
 
   const SQLLatency = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://localhost:5001/latency?timeframe=${query}`)
+    const response = await axios.get(`http://ui-server-container:5001/latency?timeframe=${query}`)
     setLatencyData(response.data)
   }
 

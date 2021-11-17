@@ -27,7 +27,7 @@ const formatEPSQuery = ( timeframe ) => {
           ELSE value
         END
       ) AS "errors"
-      FROM eps
+      FROM tsdb_eps
       WHERE time > NOW() - INTERVAL '${queryTimeframe}'
       WINDOW w AS (ORDER BY time)
       ORDER BY time;
