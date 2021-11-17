@@ -1,20 +1,16 @@
 const { query } = require('express');
 const express = require('express');
-const { Client } = require('pg')
+const { Client, Connection } = require('pg')
 const { formatRPSMetrics, formatRPSQuery } = require('./utils/formatRPS')
 const { formatEPSMetrics, formatEPSQuery } = require('./utils/formatEPS')
 const { formatLatencyMetrics, formatLatencyQuery } = require('./utils/formatLatency')
 
 require('dotenv').config();
 
+const connectionString = `postgres://${process.env.POSTGRES_ADMIN}:${process.env.POSTGRES_PASSWORD}@${process.env.DB_CONTAINER_NAME}:${process.env.DB_PORT}/${process.env.DB_NAME}`
 
-const client = new Client({
-  user: process.env.PGUSER,
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  password: process.env.PGPASSWORD,
-  port: process.env.PGPORT,
-})
+
+const client = new Client(connectionString)
 
 // need to add client.end() somewhere
 //const connectionString = process.env.PG
@@ -41,6 +37,11 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // ROUTING:
+app.get("/", (req, res) => {
+  res.send("Hello World")
+})
+
+
 app.use('/rps-metric/', async (req, res, next) => {
   const timeframe = req.query.timeframe
   if (!timeframe) return
