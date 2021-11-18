@@ -1,9 +1,9 @@
 const { query } = require('express');
 const express = require('express');
 const { Client } = require('pg')
-const { formatRPSMetrics, formatRPSQuery } = require('./utils/formatRPS')
-const { formatEPSMetrics, formatEPSQuery } = require('./utils/formatEPS')
-const { formatLatencyMetrics, formatLatencyQuery } = require('./utils/formatLatency')
+const { formatRPSMetrics, formatRPSQuery } = require('../utils/formatRPS')
+const { formatEPSMetrics, formatEPSQuery } = require('../utils/formatEPS')
+const { formatLatencyMetrics, formatLatencyQuery } = require('../utils/formatLatency')
 
 require('dotenv').config();
 
@@ -27,7 +27,6 @@ client.connect()
   .catch(error => console.log(error))
 //TODO: need to add client.end() somewhere
 
-
 const app = express();
 const port = process.env.PORT || 5001;
 
@@ -42,6 +41,7 @@ app.use(express.json());
 // ROUTING:
 app.use('/rps-metric/', async (req, res, next) => {
   const timeframe = req.query.timeframe
+
   if (!timeframe) {
     res.status(404).send("You must provide a given timeframe")
   } else {
@@ -58,7 +58,7 @@ app.use('/rps-error/', async (req, res, next) => {
   } else {
     let response = await client.query(formatEPSQuery(timeframe))
     let formattedResults = formatEPSMetrics(response.rows)
-    res.send(formattedResults)
+    res.status(200).send(formattedResults)
   }
 });
 
@@ -129,8 +129,5 @@ app.use((err, req, res, next) => {
   res.json({ error: err.message || "An unknown error occured" });
 });
 
-// Starting the Server:
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`)
-});
-
+// Exporting app to be tested by Jest:
+module.exports = { app, client };
