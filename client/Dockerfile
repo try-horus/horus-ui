@@ -12,7 +12,7 @@ FROM node:lts-alpine@sha256:0eca266c5fe38ba93aebac00e45c9ac1bb7328b0702a6dc10e1a
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-RUN npm build && npm install --production --ignore-scripts --prefer-offline
+RUN npm run-script build && npm install --production --ignore-scripts --prefer-offline
 
 # Production image, copy all the files and run next
 FROM node:lts-alpine@sha256:0eca266c5fe38ba93aebac00e45c9ac1bb7328b0702a6dc10e1a6ea543d49301 AS runner
@@ -29,6 +29,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
+
+ENV UI_SERVER_HOST=ui-server
+ENV UI_CLIENT_HOST=ui-client
 
 USER nextjs
 

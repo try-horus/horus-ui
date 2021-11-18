@@ -38,7 +38,7 @@ const oneTrace = () => {
     if (!router.isReady) return;
 
     try {
-      let response = await axios.get(`http://ui-server-container:5001/traces/${traceId}`);
+      let response = await axios.get(`http://${process.env.UI_SERVER_HOST}:5001/traces/${traceId}`);
       response = response.data;
       setListOfSortedSpans(response);
       //setClickedSpan(response[0]);
