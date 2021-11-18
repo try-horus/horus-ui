@@ -9,19 +9,7 @@ require('dotenv').config();
 
 const connectionString = `postgres://${process.env.POSTGRES_ADMIN}:${process.env.POSTGRES_PASSWORD}@${process.env.DB_CONTAINER_NAME}:${process.env.DB_PORT}/${process.env.DB_NAME}`
 
-
 const client = new Client(connectionString)
-
-// const client = new Client({
-//   user: process.env.PGUSER,
-//   host: process.env.PGHOST,
-//   database: process.env.PGDATABASE,
-//   password: process.env.PGPASSWORD,
-//   port: process.env.PGPORT,
-// })
-
-// need to add client.end() somewhere
-//const connectionString = process.env.PG
 
 //const connectionString = "postgres://juan:juan@localhost:5432/horus"
 // const connectionString = `postgres://horus_admin:horus_admin@localhost:5434/horus`
@@ -34,7 +22,6 @@ client.connect()
     console.log(error)
     console.log(connectionString)
     })
-//TODO: need to add client.end() somewhere
 
 
 const app = express();
