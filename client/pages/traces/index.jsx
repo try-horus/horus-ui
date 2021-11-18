@@ -14,7 +14,7 @@ function About() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/traces?start=${start}&end=${end}`)
+      .get(`http://ui-server-container:5001/traces?start=${start}&end=${end}`)
       .then(res => {
         setCount(res.data.count || 0);
         setTraces(res.data.traces || []);
@@ -33,7 +33,7 @@ function About() {
 // export async function getStaticProps({ query }) {
 //   // Access query strings to make the URL dynamic
 
-//   const res = await fetch("http://localhost:5001/traces?start=2021-11-10T22:07:58.000Z&end=2021-11-11T22:08:08.000Z");
+//   const res = await fetch("http://ui-server-container:5001/traces?start=2021-11-10T22:07:58.000Z&end=2021-11-11T22:08:08.000Z");
 //   const data = await res.json();
 //   console.log(data)
 //   return {
