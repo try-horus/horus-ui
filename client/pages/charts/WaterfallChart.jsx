@@ -12,6 +12,7 @@ const data = {
 */
 
 const WaterfallChart = ({ labels, datasets, handleClickOnChart }) => {
+  console.log(datasets)
   const options = {
     type: 'bar',
     // responsive: true,

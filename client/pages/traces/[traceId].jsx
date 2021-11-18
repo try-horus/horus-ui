@@ -31,6 +31,8 @@ const oneTrace = () => {
   ]);
   const [listOfSortedSpans, setListOfSortedSpans] = useState([]);
   const [clickedSpan, setClickedSpan] = useState({});
+  const [listOfFilteredSpans, setListOfFilteredSpans] = useState([])
+  const [filterOfSpans, setFilterOfSpans] = useState("All Spans")
 
   useEffect(async () => {
     if (!router.isReady) return;
@@ -39,34 +41,74 @@ const oneTrace = () => {
       let response = await axios.get(`http://localhost:5001/traces/${traceId}`);
       response = response.data;
       setListOfSortedSpans(response);
-      setClickedSpan(response[0]);
-      if (response !== undefined) {
-        setLabels(response.map((span) => span.span_name));
-
-        /*
-        Get the starting time of the trace as a variable
-        In all the spans, the first value will be
-        startingTimeOfTheSpan - startingTimeOfTheTrace
-        The second, upper value will be:
-        startingTimeOfTheSpan - startingTimeOfTheTrace + latency
-      */
-        const latencyData = [];
-        const startingTimeOfTheTrace =
-          response[0]["start_time_in_microseconds"];
-
-        // This code is okay, the problem is that there is empty space in the traces that
-        // is not accounted for
-        response.map((span) => {
-          const baseValue =
-            span.start_time_in_microseconds - startingTimeOfTheTrace;
-          latencyData.push([baseValue, baseValue + span.span_latency]);
-        });
-        setDatasets([{ data: latencyData }]);
-      }
+      //setClickedSpan(response[0]);
     } catch (e) {
       console.log(e);
     }
   }, [router.isReady]);
+
+  useEffect(() => {
+    setListOfFilteredSpans(listOfSortedSpans)
+  }, [listOfSortedSpans]);
+
+  useEffect(() => {
+    console.log(listOfSortedSpans)
+
+    if (listOfFilteredSpans.length === 0) return
+    setClickedSpan(listOfFilteredSpans[0])
+
+    if (listOfFilteredSpans !== undefined) {
+      setLabels(listOfFilteredSpans.map((span) => span.span_name));
+
+      /*
+      Get the starting time of the trace as a variable
+      In all the spans, the first value will be
+      startingTimeOfTheSpan - startingTimeOfTheTrace
+      The second, upper value will be:
+      startingTimeOfTheSpan - startingTimeOfTheTrace + latency
+    */
+    if (filterOfSpans !== "Non-HTTP Spans") {
+      const latencyData = [];
+      const startingTimeOfTheTrace =
+        listOfFilteredSpans[0]["start_time_in_microseconds"];
+
+      // This code is okay, the problem is that there is empty space in the traces that
+      // is not accounted for
+      listOfFilteredSpans.map((span) => {
+        const baseValue =
+          span.start_time_in_microseconds - startingTimeOfTheTrace;
+        latencyData.push([baseValue, baseValue + span.span_latency]);
+      });
+      setDatasets([{ data: latencyData }]);
+    } else {
+      const latencyData = []
+      let starting = 0
+      let ending = 0
+      listOfFilteredSpans.map((span) => {
+        starting = ending
+        ending = starting + span.span_latency
+        latencyData.push([starting, ending]);
+      });
+      setDatasets([{ data: latencyData }]);
+    }
+      
+    }
+
+  }, [listOfFilteredSpans]);
+
+  useEffect(() => {
+    console.log(listOfSortedSpans)
+    // set listOfFilteredSpans to the result of filtering the listOfSortedSpans
+    if (filterOfSpans === "HTTP Spans") {
+      const httpSpans = listOfSortedSpans.filter(span => span["instrumentation_library"].includes("http"))
+      setListOfFilteredSpans(httpSpans)
+    } else if (filterOfSpans === "Non-HTTP Spans"){
+      const nonHTTPSpans = listOfSortedSpans.filter(span => !span["instrumentation_library"].includes("http"))
+      setListOfFilteredSpans(nonHTTPSpans)
+    } else {
+      setListOfFilteredSpans(listOfSortedSpans)
+    }
+  }, [filterOfSpans]);
 
   const handleClickOnChart = (event, arrayOfInfo) => {
     if (arrayOfInfo[0] !== undefined) {
@@ -75,12 +117,16 @@ const oneTrace = () => {
     }
   };
 
+  const handleFilteringOfSpans = (e) => {
+    setFilterOfSpans(e.target.value)
+  }
+
   return (
     <div>
       <Header />
       <main className="p-5" height="1000px">
         <h2 className="text-center text-4xl mb-10">Single Trace Breakdown</h2>
-        <IndividualTraceHeader traceId={traceId}/>
+        <IndividualTraceHeader traceId={traceId} handleFilteringOfSpans={handleFilteringOfSpans} />
         <div className="mt-5 flex h-full w-full">
           <div className="bg-white p-5 mr-0 h-full w-full">
             <WaterfallChart
