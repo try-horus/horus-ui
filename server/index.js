@@ -19,7 +19,8 @@ const client = new Client({
 // need to add client.end() somewhere
 //const connectionString = process.env.PG
 
-// const connectionString = "postgres://juan:juan@localhost:5432/horus"
+//const connectionString = "postgres://juan:juan@localhost:5432/horus"
+// const connectionString = `postgres://horus_admin:horus_admin@localhost:5434/horus`
 // console.log(connectionString)
 // const client = new Client({connectionString})
 
