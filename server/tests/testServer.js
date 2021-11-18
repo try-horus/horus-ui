@@ -64,10 +64,13 @@ app.use('/rps-error/', async (req, res, next) => {
 
 app.use('/latency/', async (req, res, next) => {  
   const timeframe = req.query.timeframe
-  if (!timeframe) return
-  let response = await client.query(formatLatencyQuery(timeframe))
-  let formattedResults = formatLatencyMetrics(response.rows)
-  res.send(formattedResults)
+  if (!timeframe) {
+    res.status(404).send("You must provide a given timeframe")
+  } else {
+    let response = await client.query(formatLatencyQuery(timeframe))
+    let formattedResults = formatLatencyMetrics(response.rows)
+    res.status(200).send(formattedResults)
+  }
 });
 
 // Get data to populate the tracing table page
@@ -98,7 +101,6 @@ app.get('/traces/', async (req, res, next) => {
 });
 
 app.get('/traces/:traceId', async (req, res) => {
-
   const traceId = req.params.traceId
   const getAllSpansFromTraceText = 'SELECT * FROM spans WHERE trace_id=$1;'
   let sortedArrayOfSpans
