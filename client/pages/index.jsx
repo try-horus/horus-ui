@@ -16,6 +16,9 @@ function About() {
   const [ refreshClicked, setRefreshClicked ] = useState(false)
   const [ isDataEmpty, setIsDataEmpty ] = useState(true)
 
+  console.log(`\n\nUI SERVER HOST: ${process.env.UI_SERVER_HOST}\n\n`);
+  console.log(`\n\nUI CLIENT HOST: ${process.env.UI_CLIENT_HOST}\n\n`);
+
   useEffect(() => {
     getSQLforTimeFrame()
     let interval = setInterval(() => {
