@@ -1,13 +1,13 @@
 const { query } = require('express');
 const express = require('express');
-const { Client } = require('pg')
+const { Pool } = require('pg')
 const { formatRPSMetrics, formatRPSQuery } = require('../utils/formatRPS')
 const { formatEPSMetrics, formatEPSQuery } = require('../utils/formatEPS')
 const { formatLatencyMetrics, formatLatencyQuery } = require('../utils/formatLatency')
 
 require('dotenv').config();
 
-const client = new Client({
+const client = new Pool({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
@@ -15,20 +15,14 @@ const client = new Client({
   port: process.env.PGPORT,
 })
 
-// need to add client.end() somewhere
-//const connectionString = process.env.PG
 //const connectionString = "postgres://juan:juan@localhost:5432/horus"
 // const connectionString = `postgres://horus_admin:horus_admin@localhost:5434/horus`
-// console.log(connectionString)
-// const client = new Client({connectionString})
 
 client.connect()
   .then(() => console.log("Connected successfully to the database"))
   .catch(error => console.log(error))
-//TODO: need to add client.end() somewhere
 
 const app = express();
-const port = process.env.PORT || 5001;
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");

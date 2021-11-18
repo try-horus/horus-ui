@@ -15,17 +15,13 @@ const client = new Client({
   port: process.env.PGPORT,
 })
 
-// need to add client.end() somewhere
-//const connectionString = process.env.PG
 //const connectionString = "postgres://juan:juan@localhost:5432/horus"
 // const connectionString = `postgres://horus_admin:horus_admin@localhost:5434/horus`
-// console.log(connectionString)
-// const client = new Client({connectionString})
+
 
 client.connect()
   .then(() => console.log("Connected successfully to the database"))
   .catch(error => console.log(error))
-//TODO: need to add client.end() somewhere
 
 
 const app = express();
@@ -42,6 +38,7 @@ app.use(express.json());
 // ROUTING:
 app.use('/rps-metric/', async (req, res, next) => {
   const timeframe = req.query.timeframe
+
   if (!timeframe) {
     res.status(404).send("You must provide a given timeframe")
   } else {
@@ -58,36 +55,30 @@ app.use('/rps-error/', async (req, res, next) => {
   } else {
     let response = await client.query(formatEPSQuery(timeframe))
     let formattedResults = formatEPSMetrics(response.rows)
-    res.send(formattedResults)
+    res.status(200).send(formattedResults)
   }
 });
 
 app.use('/latency/', async (req, res, next) => {  
   const timeframe = req.query.timeframe
-  if (!timeframe) return
-  let response = await client.query(formatLatencyQuery(timeframe))
-  let formattedResults = formatLatencyMetrics(response.rows)
-  res.send(formattedResults)
+  if (!timeframe) {
+    res.status(404).send("You must provide a given timeframe")
+  } else {
+    let response = await client.query(formatLatencyQuery(timeframe))
+    let formattedResults = formatLatencyMetrics(response.rows)
+    res.status(200).send(formattedResults)
+  }
 });
 
 // Get data to populate the tracing table page
 app.get('/traces/', async (req, res, next) => {
   const start = req.query.start;
   const end = req.query.end;
+  const resultObj = {};
 
   if (start === "undefined" || end === "undefined") return 
 
   const selectQueryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}' ORDER BY trace_start_time desc;`;
-  const countQueryString = `SELECT COUNT(*) FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}';`
-
-  const resultObj = {};
-
-  await client
-    .query(countQueryString)
-    .then(query => {
-      resultObj.count = Number(query.rows[0].count);
-    })
-    .catch(err => console.log(err))
 
   await client
     .query(selectQueryString)
@@ -133,4 +124,8 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`)
 });
+
+app.on("exit", () => {
+  client.end()
+})
 

@@ -1,9 +1,10 @@
 const { app, client } = require("./testServer")
 const request = require("supertest")
+jest.setTimeout(30000)
 
-afterAll((done) => {
-  client.end(done)
-})
+// afterAll((done) => {
+//   client.end(done)
+// })
 
 describe('Tests for rps-metric endpoint', function() {
   test("valid timeframe responds 200 for rps", async () => {
