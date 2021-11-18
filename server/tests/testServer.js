@@ -1,15 +1,19 @@
 const { query } = require('express');
 const express = require('express');
-const { Client, Connection } = require('pg')
-const { formatRPSMetrics, formatRPSQuery } = require('./utils/formatRPS')
-const { formatEPSMetrics, formatEPSQuery } = require('./utils/formatEPS')
-const { formatLatencyMetrics, formatLatencyQuery } = require('./utils/formatLatency')
+const { Pool } = require('pg')
+const { formatRPSMetrics, formatRPSQuery } = require('../utils/formatRPS')
+const { formatEPSMetrics, formatEPSQuery } = require('../utils/formatEPS')
+const { formatLatencyMetrics, formatLatencyQuery } = require('../utils/formatLatency')
 
 require('dotenv').config();
 
-const connectionString = `postgres://${process.env.POSTGRES_ADMIN}:${process.env.POSTGRES_PASSWORD}@${process.env.DB_CONTAINER_NAME}:${process.env.DB_PORT}/${process.env.DB_NAME}`
-
-const client = new Client(connectionString)
+const client = new Pool({
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
+})
 
 //const connectionString = "postgres://juan:juan@localhost:5432/horus"
 // const connectionString = `postgres://horus_admin:horus_admin@localhost:5434/horus`
@@ -18,9 +22,7 @@ client.connect()
   .then(() => console.log("Connected successfully to the database"))
   .catch(error => console.log(error))
 
-
 const app = express();
-const port = process.env.PORT || 5001;
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -31,11 +33,6 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // ROUTING:
-app.get("/", (req, res) => {
-  res.send("Hello World")
-})
-
-
 app.use('/rps-metric/', async (req, res, next) => {
   const timeframe = req.query.timeframe
 
@@ -85,11 +82,12 @@ app.get('/traces/', async (req, res, next) => {
     .then(traces => resultObj.traces = traces.rows)
     .catch((err) => console.log(err));
 
+  console.log(resultObj)
+
   res.send(resultObj)
 });
 
 app.get('/traces/:traceId', async (req, res) => {
-
   const traceId = req.params.traceId
   const getAllSpansFromTraceText = 'SELECT * FROM spans WHERE trace_id=$1;'
   let sortedArrayOfSpans
@@ -120,11 +118,5 @@ app.use((err, req, res, next) => {
   res.json({ error: err.message || "An unknown error occured" });
 });
 
-// Starting the Server:
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`)
-});
-
-app.on("exit", () => {
-  client.end()
-})
+// Exporting app to be tested by Jest:
+module.exports = { app, client };
