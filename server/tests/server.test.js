@@ -51,5 +51,10 @@ describe("Tests for latency endpoint", function () {
   })
 })
 
-
-
+describe("Testing for error handling 404/500", function() {
+  test("testing 404 response for incorrect endpoint", async() => {
+    const res = await request(app).get('/thisisanerror');
+      expect(404)
+      expect(res.body.error).toEqual("Could not find this route.")
+  })
+})

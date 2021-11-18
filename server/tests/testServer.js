@@ -77,25 +77,18 @@ app.use('/latency/', async (req, res, next) => {
 app.get('/traces/', async (req, res, next) => {
   const start = req.query.start;
   const end = req.query.end;
+  const resultObj = {};
 
   if (start === "undefined" || end === "undefined") return 
 
   const selectQueryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}' ORDER BY trace_start_time desc;`;
-  const countQueryString = `SELECT COUNT(*) FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}';`
-
-  const resultObj = {};
-
-  await client
-    .query(countQueryString)
-    .then(query => {
-      resultObj.count = Number(query.rows[0].count);
-    })
-    .catch(err => console.log(err))
 
   await client
     .query(selectQueryString)
     .then(traces => resultObj.traces = traces.rows)
     .catch((err) => console.log(err));
+
+  console.log(resultObj)
 
   res.send(resultObj)
 });
