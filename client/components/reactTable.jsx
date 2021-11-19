@@ -111,7 +111,7 @@ const FilterComponent = ({ filterText, onFilter}) => (
       item => {
         let searchTerm = filterText.toLowerCase()
           return (
-            item.trace_id.toLowerCase().includes(searchTerm) || 
+            item.trace_id.toLowerCase().includes(searchTerm) ||
             String(item.root_span_host).includes(searchTerm) ||
             item.root_span_http_method.toLowerCase().includes(searchTerm) ||
             item.root_span_endpoint.toLowerCase().includes(searchTerm)  ||
@@ -135,7 +135,7 @@ const FilterComponent = ({ filterText, onFilter}) => (
 
     const handleRowClick = (e) => {
       const traceId = e.trace_id
-      const href = `http://143.198.27.65:3000/traces/${traceId}`
+      const href = `http://${process.env.UI_CLIENT_HOST}:3000/traces/${traceId}`
       router.push(href)
     }
 
