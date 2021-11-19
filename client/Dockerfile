@@ -30,9 +30,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-ENV UI_SERVER_HOST=ui-server
-ENV UI_CLIENT_HOST=ui-client
-
 USER nextjs
 
 EXPOSE 3000
