@@ -16,8 +16,8 @@ function About() {
   const [ refreshClicked, setRefreshClicked ] = useState(false)
   const [ isDataEmpty, setIsDataEmpty ] = useState(true)
 
-  console.log(`\n\nUI SERVER HOST: ${process.env.UI_SERVER_HOST}\n\n`);
-  console.log(`\n\nUI CLIENT HOST: ${process.env.UI_CLIENT_HOST}\n\n`);
+  console.log(`\n\nUI SERVER HOST: http://143.198.27.65\n\n`);
+  console.log(`\n\nUI CLIENT HOST: http://143.198.27.65\n\n`);
 
   useEffect(() => {
     getSQLforTimeFrame()
@@ -39,27 +39,27 @@ function About() {
 
   const SQLRPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    console.log("VERY FUNNY MESSAGE", process.env.UI_SERVER_HOST)
-    const response = await axios.get(`http://${process.env.UI_SERVER_HOST}:5001/rps-metric?timeframe=${query}`)
+    console.log("VERY FUNNY MESSAGE", "http://143.198.27.65")
+    const response = await axios.get(`http://143.198.27.65:5001/rps-metric?timeframe=${query}`)
     setIsDataEmpty(response.data[0].data.length === 0)
     setRPSData(response.data)
   }
 
   const SQLEPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://${process.env.UI_SERVER_HOST}:5001/rps-error?timeframe=${query}`)
+    const response = await axios.get(`http://143.198.27.65:5001/rps-error?timeframe=${query}`)
     setEPSData(response.data)
   }
 
   const SQLLatency = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://${process.env.UI_SERVER_HOST}:5001/latency?timeframe=${query}`)
+    const response = await axios.get(`http://143.198.27.65:5001/latency?timeframe=${query}`)
     setLatencyData(response.data)
   }
 
   return (
     <>
-      <Header />  
+      <Header />
       <main className="p-5">
         <h2 className="text-center text-4xl">Metrics</h2>
         <TimeFrame 

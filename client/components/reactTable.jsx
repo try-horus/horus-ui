@@ -107,7 +107,7 @@ const FilterComponent = ({ filterText, onFilter}) => (
 
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-    const filteredItems = data.filter( 
+    const filteredItems = data.filter(
       item => {
         let searchTerm = filterText.toLowerCase()
           return (
@@ -119,7 +119,7 @@ const FilterComponent = ({ filterText, onFilter}) => (
             String(item.contains_errors).includes(searchTerm))
       }
     );
-  
+
     const handleClear = () => {
         if (filterText) {
           setResetPaginationToggle(!resetPaginationToggle);
@@ -135,7 +135,7 @@ const FilterComponent = ({ filterText, onFilter}) => (
 
     const handleRowClick = (e) => {
       const traceId = e.trace_id
-      const href = `http://${process.env.UI_CLIENT_HOST}:3000/traces/${traceId}`
+      const href = `http://143.198.27.65:3000/traces/${traceId}`
       router.push(href)
     }
 
