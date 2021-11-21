@@ -30,7 +30,7 @@ function TimeFrame({ setTimeframe, getSQLforTimeFrame, setRefreshTime, refreshTi
             </button>
             <form className="font-body" action="#">
               <label for="timeframe"></label>
-              <select className="bg-white pr-12" name="timeframe" id="timeframe" onChange={(e) => handleTimeFrameSelect(e)} >
+              <select className="bg-white pr-20" name="timeframe" id="timeframe" onChange={(e) => handleTimeFrameSelect(e)} >
                 <option value="15 minutes">15 minutes</option>
                 <option value="1 hour">1 hour</option>
                 <option value="4 hours">4 hours</option>
