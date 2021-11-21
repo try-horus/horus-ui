@@ -18,7 +18,7 @@ const LineChart = ({ data , style, chartName }) => {
     const handleDataClick = (point) => {
         const [start, end] = createQueryDatesStrings(point.data.xFormatted)
         console.log(start, end)
-        const href = `http://ui-client:3000/traces?start=${start}&end=${end}`
+        const href = `${process.env.UI_CLIENT_HOST}/traces?start=${start}&end=${end}`
         router.push(href)
     }
 

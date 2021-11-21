@@ -7,7 +7,8 @@ module.exports = {
     extend: {
       colors: {
         horusBlue: '#081b53',
-        horusYellow: '#FFdf6c'
+        horusYellow: '#FFdf6c',
+        horusViolet: '#b983FF'
       },
       fontFamily: {
         'head': ['Rubik'],

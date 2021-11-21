@@ -1,5 +1,6 @@
 import TraceTable from "../../components/reactTable";
 import Header from "../../components/pageHeader"
+import Breadcrumb from "../../components/Breadcrumb"
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import axios from "axios";
@@ -14,7 +15,7 @@ function About() {
 
   useEffect(() => {
     axios
-      .get(`http://ui-server:5001/traces?start=${start}&end=${end}`)
+      .get(`${process.env.UI_SERVER_HOST}/traces?start=${start}&end=${end}`)
       .then(res => {
         setCount(res.data.count || 0);
         setTraces(res.data.traces || []);
@@ -24,7 +25,7 @@ function About() {
   return (
     <div >
       <Header />
-      <h2 className="text-center text-4xl mt-8">Traces</h2>
+      <Breadcrumb />
       <TraceTable data={traces}/>
     </div>
   )

@@ -25,7 +25,7 @@ const columns = [
       sortable: true,
     },
     {
-      name: 'Latency',
+      name: 'Latency (μs)',
       selector: row => row.trace_latency,
       sortable:true
     },
@@ -49,12 +49,6 @@ const TextField = styled.input`
 `;
 
 const customStyles = {
-  title: {
-    style: {
-      fontColor: 'red',
-      fontWeight: '900',
-    }
-  },
   rows: {
     style: {
       minHeight: '72px', // override the row height
@@ -65,22 +59,24 @@ const customStyles = {
   },
   headCells: {
     style: {
-      fontSize: '15px',
+      fontSize: '20px',
       fontWeight: '500',
-      textTransform: 'uppercase',
-      paddingLeft: '0 8px'
+      fontFamily: "Rubik",
+      color: '#081b53'
     },
   },
   cells: {
     style: {
       fontSize: '13px',
-      paddingLeft: '0 8px',
+      fontFamily: 'Roboto',
+      paddingTop: '15px',
+      paddingBottom: '15px',
+      color: '#081b53'
     },
   },
   tableWrapper: {
     style:{
       borderRadius: "25px",
-      border: "2px solid rgb(30, 64, 175)",
       margin: "20px",
       padding: "20px",
       width: "95%"
@@ -127,9 +123,13 @@ const FilterComponent = ({ filterText, onFilter}) => (
         }
     };
 
-    const returnFilteredComponent = () => {
+    const TableHeader = () => {
       return (
-        <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+          <div className="flex items-center ml-16 mr-16 pt-16">
+            <h2 className="font-head text-horusBlue text-center text-7xl">Traces</h2>
+            <span className="w-full"></span>
+            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+          </div>
       )
     }
 
@@ -141,17 +141,18 @@ const FilterComponent = ({ filterText, onFilter}) => (
 
     return (
       <>
+        <TableHeader />
+        <div className="ml-5 mr-5">
         <DataTable
             columns={columns}
             data={filteredItems}
             pagination
-            subHeader
-            subHeaderComponent={returnFilteredComponent()}
             dense
             onRowClicked={handleRowClick}
             className="rounded-lg"
             customStyles={customStyles}
         />
+        </div>
       </>
     );
 };
