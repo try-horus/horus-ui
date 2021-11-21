@@ -1,6 +1,5 @@
 import WaterfallChart from "../charts/WaterfallChart.jsx";
-import ButtonToGoBack from "../../components/ButtonToGoBack";
-import ButtonToFilterTraces from "../../components/ButtonToFilterTraces";
+import Breadcrumb from "../../components/Breadcrumb"
 import SpanTables from "../../components/SpanTables";
 import Header from "../../components/pageHeader";
 
@@ -32,7 +31,7 @@ const oneTrace = () => {
   const [listOfSortedSpans, setListOfSortedSpans] = useState([]);
   const [clickedSpan, setClickedSpan] = useState({});
   const [listOfFilteredSpans, setListOfFilteredSpans] = useState([])
-  const [filterOfSpans, setFilterOfSpans] = useState("All Spans")
+  const [filterOfSpans, setFilterOfSpans] = useState("HTTP Spans")
 
   useEffect(async () => {
     if (!router.isReady) return;
@@ -41,7 +40,6 @@ const oneTrace = () => {
       let response = await axios.get(`${process.env.UI_SERVER_HOST}/traces/${traceId}`);
       response = response.data;
       setListOfSortedSpans(response);
-      //setClickedSpan(response[0]);
     } catch (e) {
       console.log(e);
     }
@@ -49,6 +47,7 @@ const oneTrace = () => {
 
   useEffect(() => {
     setListOfFilteredSpans(listOfSortedSpans)
+    selectSpansBasedOnDropdown()
   }, [listOfSortedSpans]);
 
   useEffect(() => {
@@ -97,17 +96,8 @@ const oneTrace = () => {
   }, [listOfFilteredSpans]);
 
   useEffect(() => {
-    console.log(listOfSortedSpans)
     // set listOfFilteredSpans to the result of filtering the listOfSortedSpans
-    if (filterOfSpans === "HTTP Spans") {
-      const httpSpans = listOfSortedSpans.filter(span => span["instrumentation_library"].includes("http"))
-      setListOfFilteredSpans(httpSpans)
-    } else if (filterOfSpans === "Non-HTTP Spans"){
-      const nonHTTPSpans = listOfSortedSpans.filter(span => !span["instrumentation_library"].includes("http"))
-      setListOfFilteredSpans(nonHTTPSpans)
-    } else {
-      setListOfFilteredSpans(listOfSortedSpans)
-    }
+    selectSpansBasedOnDropdown()
   }, [filterOfSpans]);
 
   const handleClickOnChart = (event, arrayOfInfo) => {
@@ -121,11 +111,24 @@ const oneTrace = () => {
     setFilterOfSpans(e.target.value)
   }
 
+  const selectSpansBasedOnDropdown = () => {
+    console.log(filterOfSpans)
+    if (filterOfSpans === "HTTP Spans") {
+      const httpSpans = listOfSortedSpans.filter(span => span["instrumentation_library"].includes("http"))
+      setListOfFilteredSpans(httpSpans)
+    } else if (filterOfSpans === "Non-HTTP Spans"){
+      const nonHTTPSpans = listOfSortedSpans.filter(span => !span["instrumentation_library"].includes("http"))
+      setListOfFilteredSpans(nonHTTPSpans)
+    } else {
+      setListOfFilteredSpans(listOfSortedSpans)
+    }
+  }
+
   return (
     <div>
       <Header />
+      <Breadcrumb page={"singleTrace"}/>
       <main className="p-5" height="1000px">
-        <h2 className="text-center text-4xl mb-10">Single Trace Breakdown</h2>
         <IndividualTraceHeader traceId={traceId} handleFilteringOfSpans={handleFilteringOfSpans} />
         <div className="mt-5 flex h-full w-full">
           <div className="bg-white p-5 mr-0 h-full w-full">
