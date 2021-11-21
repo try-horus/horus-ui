@@ -14,7 +14,7 @@ function About() {
 
   useEffect(() => {
     axios
-      .get(`http://${process.env.UI_SERVER_HOST}:5001/traces?start=${start}&end=${end}`)
+      .get(`http://ui-server:5001/traces?start=${start}&end=${end}`)
       .then(res => {
         setCount(res.data.count || 0);
         setTraces(res.data.traces || []);
@@ -25,22 +25,9 @@ function About() {
     <div >
       <Header />
       <h2 className="text-center text-4xl mt-8">Traces</h2>
-      <TraceTable data={traces}/> 
+      <TraceTable data={traces}/>
     </div>
   )
 }
-
-// export async function getStaticProps({ query }) {
-//   // Access query strings to make the URL dynamic
-
-//   const res = await fetch("http://${process.env.UI_SERVER_HOST}:5001/traces?start=2021-11-10T22:07:58.000Z&end=2021-11-11T22:08:08.000Z");
-//   const data = await res.json();
-//   console.log(data)
-//   return {
-//     props: {
-//       data,
-//     },
-//   }
-// };
 
 export default About;

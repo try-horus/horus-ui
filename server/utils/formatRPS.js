@@ -8,7 +8,7 @@ const formatRPSMetrics = (metricRows) => {
   return [
     {
       "id": "Requests Per Second",
-      "color": "hsla(117, 100%, 40%, 1)",
+      "color": "rgb(185, 131, 255)",
       "data": newData
     }
   ]

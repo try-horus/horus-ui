@@ -2,17 +2,17 @@ const formatLatencyMetrics = (latencyRows) => {
   let newData = {
       "500": {
           "id": "500 ms",
-          "color": "hsla(101, 100%, 44%, 1)",
+          "color": "hsl(83, 95%, 71%)",
           "data": []
           }, 
       "1500": {
           "id": "1500 ms",
-          "color": "hsla(64, 100%, 44%, 1)",
+          "color": "hsl(47, 100%, 71%)",
           "data": []
           },
       "1500+":{
             "id": "1500+ ms",
-            "color": "hsla(0, 100%, 56%, 1)",
+            "color": "hsl(0, 100%, 70%)",
             "data": []
           }
   }
