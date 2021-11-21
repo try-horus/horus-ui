@@ -32,6 +32,7 @@ const oneTrace = () => {
   const [clickedSpan, setClickedSpan] = useState({});
   const [listOfFilteredSpans, setListOfFilteredSpans] = useState([])
   const [filterOfSpans, setFilterOfSpans] = useState("HTTP Spans")
+  const [showSpanInfo, setShowSpanInfo] = useState(false)
 
   useEffect(async () => {
     if (!router.isReady) return;
@@ -104,6 +105,7 @@ const oneTrace = () => {
     if (arrayOfInfo[0] !== undefined) {
       const index = arrayOfInfo[0]["index"];
       setClickedSpan(listOfSortedSpans[index]);
+      setShowSpanInfo(true)
     }
   };
 
@@ -125,24 +127,29 @@ const oneTrace = () => {
   }
 
   return (
-    <div>
+    <div >
       <Header />
       <Breadcrumb page={"singleTrace"}/>
       <main className="p-5" height="1000px">
         <IndividualTraceHeader traceId={traceId} handleFilteringOfSpans={handleFilteringOfSpans} />
-        <div className="mt-5 flex h-full w-full">
-          <div className="bg-white p-5 mr-0 h-full w-full">
+        <div className="mt-5 flex h-full w-full items-center">
+          <div className={`${showSpanInfo ? "w-1/2" : "w-full"} mr-4`}>
             <WaterfallChart
-              labels={labels}
-              datasets={datasets}
-              handleClickOnChart={handleClickOnChart}
+                labels={labels}
+                datasets={datasets}
+                handleClickOnChart={handleClickOnChart}
+                className="w-1/2"
             />
           </div>
+          <div className={`w-1/2 ${showSpanInfo ? "" : "hidden"}`}>
+            <SpanTables span={clickedSpan}/>
+          </div>
         </div>
-        <SpanTables span={clickedSpan} />
       </main>
     </div>
   );
 };
 
 export default oneTrace;
+
+//         <SpanTables span={clickedSpan} />

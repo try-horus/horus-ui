@@ -4,7 +4,7 @@ import DataTable from 'react-data-table-component';
 const SpanInfoTable = ({ span, style }) => {
     const columns = [
       {
-        name: 'Span Info',
+        name: 'Span Information',
         selector: row => row.title,
       },
       {

@@ -16,12 +16,6 @@ const SpanTables = ({ span }) => {
   }, [span]);
 
   const customStyles = {
-    title: {
-      style: {
-        fontColor: 'red',
-        fontWeight: '900',
-      }
-    },
     rows: {
       style: {
         minHeight: '72px', // override the row height
@@ -44,23 +38,18 @@ const SpanTables = ({ span }) => {
     tableWrapper: {
       style:{
         borderRadius: "25px",
-        border: "2px solid rgb(30, 64, 175)",
-        margin: "20px",
-        padding: "20px",
         width: "95%",
         backgroundColor: "white",
       } 
     }
   };
 
-  return <div className="mt-5 bg-blue-800 flex h-full w-full pr-4">
-  <div className="p-1 w-1/2">
-    <SpanInfoTable span={spanWithoutAttributes} style={customStyles} />
-  </div>
-  <div className="p-1 w-1/2">
-    <SpanAttributesTable attributes={arrayOfSpanAttributes} style={customStyles}/>
-  </div>
-  </div>
+  return (
+    <div className="pl-7 shadow-xl h-full w-full pr-4 max-h-96 overflow-y-scroll">
+      <SpanInfoTable span={spanWithoutAttributes} style={customStyles} />
+      <SpanAttributesTable attributes={arrayOfSpanAttributes} style={customStyles}/>
+    </div>
+  )
 }
 
 export default SpanTables
