@@ -36,18 +36,6 @@ const columns = [
     },
 ];
 
-const TextField = styled.input`
-	height: 32px;
-	width: 210px;
-  margin: 1.25rem;
-	border-radius: 5px;
-	border: 2px solid #e5e5e5;
-	padding: 0 32px 0 16px;
-	&:hover {
-		cursor: pointer;
-	}
-`;
-
 const customStyles = {
   rows: {
     style: {
@@ -87,22 +75,21 @@ const customStyles = {
 
 const FilterComponent = ({ filterText, onFilter}) => (
 	<>
-		<TextField
-			id="search"
+    <input			
+      id="search"
 			type="text"
 			placeholder="Filter By Trace Details"
-			aria-label="Search Input"
+      aria-label="Search Input"
 			value={filterText}
 			onChange={onFilter}
-		/>
+      className="flex divide-x divide-gray-200 rounded-md shadow-lg p-3 mr-2"
+    ></input>
 	</>
 );
 
   export const Filtering = ({data}) => {
     const router = useRouter()
-
     const [filterText, setFilterText] = useState('');
-    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = data.filter(
       item => {
         let searchTerm = filterText.toLowerCase()
@@ -115,33 +102,30 @@ const FilterComponent = ({ filterText, onFilter}) => (
             String(item.contains_errors).includes(searchTerm))
       }
     );
-
-    const handleClear = () => {
-        if (filterText) {
-          setResetPaginationToggle(!resetPaginationToggle);
-          setFilterText('');
-        }
-    };
+    
+    function onFilter(e) {
+      setFilterText(e.target.value)
+    }
 
     const TableHeader = () => {
       return (
           <div className="flex items-center ml-16 mr-16 pt-16">
             <h2 className="font-head text-horusBlue text-center text-7xl">Traces</h2>
             <span className="w-full"></span>
-            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+            <FilterComponent onFilter={onFilter} filterText={filterText} />
           </div>
       )
     }
 
     const handleRowClick = (e) => {
       const traceId = e.trace_id
-      const href = `http://ui-client:3000/traces/${traceId}`
+      const href = `${process.env.UI_CLIENT_HOST}/traces/${traceId}`
       router.push(href)
     }
 
     return (
       <>
-        <TableHeader />
+        {TableHeader()}
         <div className="ml-5 mr-5">
         <DataTable
             columns={columns}
@@ -151,6 +135,7 @@ const FilterComponent = ({ filterText, onFilter}) => (
             onRowClicked={handleRowClick}
             className="rounded-lg"
             customStyles={customStyles}
+            striped={true}
         />
         </div>
       </>
