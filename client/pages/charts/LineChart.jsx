@@ -22,6 +22,31 @@ const LineChart = ({ data , style, chartName }) => {
         router.push(href)
     }
 
+    const latencyLegend = {
+        anchor: 'top-right',
+        direction: 'column',
+        justify: false,
+        translateX: 100,
+        translateY: 0,
+        itemsSpacing: 0,
+        itemDirection: 'left-to-right',
+        itemWidth: 70,
+        itemHeight: 20,
+        itemOpacity: 0.75,
+        symbolSize: 12,
+        symbolShape: 'circle',
+        symbolBorderColor: 'rgba(0, 0, 0, .5)',
+        effects: [
+            {
+                on: 'hover',
+                style: {
+                    itemBackground: 'rgba(0, 0, 0, .03)',
+                    itemOpacity: 1
+                }
+            }
+        ]
+    }
+
 
     return (
       <div className="justify-center pl-12 pb-14 mb-14" style={{ height: 600 }}>
@@ -75,32 +100,9 @@ const LineChart = ({ data , style, chartName }) => {
             }
         }
         useMesh={true}
-        legends={[
-            {
-                anchor: 'top-right',
-                direction: 'column',
-                justify: false,
-                translateX: 100,
-                translateY: 0,
-                itemsSpacing: 0,
-                itemDirection: 'left-to-right',
-                itemWidth: 70,
-                itemHeight: 20,
-                itemOpacity: 0.75,
-                symbolSize: 12,
-                symbolShape: 'circle',
-                symbolBorderColor: 'rgba(0, 0, 0, .5)',
-                effects: [
-                    {
-                        on: 'hover',
-                        style: {
-                            itemBackground: 'rgba(0, 0, 0, .03)',
-                            itemOpacity: 1
-                        }
-                    }
-                ]
-            }
-        ]}
+        legends={
+            chartName === 'Latency Health' ? [latencyLegend] : []
+        }
       />
     </div>
   )
