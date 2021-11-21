@@ -60,7 +60,7 @@ function About() {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin></link>
         <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Rubik:wght@500&display=swap" rel="stylesheet"></link>
       </head>
-      <main className="w-full">
+      <main className="w-full pb-10">
           <Header />
           <TimeFrame 
           setTimeframe={setTimeframe} 
@@ -72,7 +72,7 @@ function About() {
           setRefreshClicked={setRefreshClicked}
           /> 
         {(isDataEmpty) 
-          ?  <div className="flex justify-center mt-5">
+          ?  <div className="flex justify-center mb-20">
               <h1 className="bg-horusYellow p-3 rounded-lg">There are no available data points for this timeframe. Please select a wider timeframe.</h1>
             </div>
           : null
@@ -83,6 +83,7 @@ function About() {
           latencyData={latencyData}
           />
       </main>
+      <footer className="bg-horusBlue"></footer>
    </>
   )
 }
