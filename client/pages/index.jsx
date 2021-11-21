@@ -55,7 +55,6 @@ function About() {
 
   return (
     <>
-<<<<<<< HEAD
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com"></link>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin></link>
@@ -64,12 +63,6 @@ function About() {
       <main className="w-full">
           <Header />
           <TimeFrame 
-=======
-      <Header />
-      <main className="p-5">
-        <h2 className="text-center text-4xl">Metrics</h2>
-        <TimeFrame 
->>>>>>> main
           setTimeframe={setTimeframe} 
           getSQLforTimeFrame={getSQLforTimeFrame}
           setRefreshTime={setRefreshTime}
