@@ -1,13 +1,11 @@
 
 function Header() {
   return (
-    <header className="py-8 p-8 bg-horusBlue text-white">
-      <div className="container flex mx-auto items-center justify-start">
+    <header className="p-8 bg-horusBlue text-white flex items-center" >
         <img className="rounded-lg w-24 ml-5" src="/horus_logo.png"/>
-        <span className="w-screen"></span>
+        <div className="w-full"></div>
         <p className="font-head">Documentation</p>
         <img className="rounded-lg w-12 ml-5" src="/github_logo.png"></img>
-      </div>
     </header>
   )
 }

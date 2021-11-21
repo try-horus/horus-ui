@@ -61,10 +61,9 @@ function About() {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin></link>
         <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Rubik:wght@500&display=swap" rel="stylesheet"></link>
       </head>
-      <Header />
-      <main className="p-5"> 
-        <h2 className="text-center text-4xl">Metrics</h2>
-        <TimeFrame 
+      <main className="w-full">
+          <Header />
+          <TimeFrame 
           setTimeframe={setTimeframe} 
           getSQLforTimeFrame={getSQLforTimeFrame}
           setRefreshTime={setRefreshTime}
