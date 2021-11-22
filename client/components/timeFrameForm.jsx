@@ -17,8 +17,8 @@ function TimeFrame({ setTimeframe, getSQLforTimeFrame, setRefreshTime, refreshTi
   
   return (
     <>
-      <div className="p-16 flex items-center space-x-5">
-        <h2 className="text-left font-head text-horusBlue text-7xl">Metrics</h2>
+      <div className="p-16 flex items-center">
+        <h1 className="text-left font-head text-horusBlue text-7xl">Metrics</h1>
         <span className="w-3/4"></span>
         <div >
         <p className="font-body text-xs text-gray-400">Last updated {timeInMinutes} minutes ago</p>

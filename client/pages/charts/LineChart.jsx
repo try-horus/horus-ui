@@ -47,11 +47,11 @@ const LineChart = ({ data , style, chartName }) => {
         ]
     }
 
-
     return (
-      <div className="justify-center pl-12 pb-14 mb-14" style={{ height: 600 }}>
+      <div className="justify-center pl-12 pb-14 mb-14" style={{height: 600}}>
         <h1 className="font-head text-horusBlue text-left rounded-lg text-4xl">{chartName}</h1>
         <ResponsiveLine
+        theme={{fontFamily: "Roboto"}}
         data={data}
         margin={{ top: 50, right: 170, bottom: 50, left: 60 }}
         xScale={{ format: "%Y-%m-%dT%H:%M:%S.%L%Z", type: "time" }}
@@ -66,7 +66,8 @@ const LineChart = ({ data , style, chartName }) => {
             tickValues: 6,
             legend: 'Time',
             legendOffset: 40,
-            legendPosition: 'middle'
+            legendPosition: 'middle',
+            fontFamily: 'Rubik'
         }}
         axisLeft={{
             orient: 'left',
@@ -74,7 +75,7 @@ const LineChart = ({ data , style, chartName }) => {
             tickPadding: 5,
             tickRotation: 0,
             legend: 'Count',
-            legendOffset: -40,
+            legendOffset: -50,
             legendPosition: 'middle'
         }}
         onClick={(point) => handleDataClick(point)}
