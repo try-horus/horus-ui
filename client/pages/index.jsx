@@ -19,7 +19,7 @@ function About() {
   useEffect(() => {
     getSQLforTimeFrame()
     let interval = setInterval(() => {
-     setTimeSinceUpdate(Date.now()) 
+     setTimeSinceUpdate(Date.now())
     }, 60000)
     setRefreshTime(Date.now())
     setRefreshClicked(false)
@@ -36,20 +36,22 @@ function About() {
 
   const SQLRPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://ui-server:5001/rps-metric?timeframe=${query}`)
+    const response = await axios.get(`http://143.198.27.65:5001/rps-metric?timeframe=${query}`)
+    console.log("getSQLforTimeFrame")
+    console.log(response)
     setIsDataEmpty(response.data[0].data.length === 0)
     setRPSData(response.data)
   }
 
   const SQLEPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://ui-server:5001/rps-error?timeframe=${query}`)
+    const response = await axios.get(`http://143.198.27.65:5001/rps-error?timeframe=${query}`)
     setEPSData(response.data)
   }
 
   const SQLLatency = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://ui-server:5001/latency?timeframe=${query}`)
+    const response = await axios.get(`http://143.198.27.65:5001/latency?timeframe=${query}`)
     setLatencyData(response.data)
   }
 
@@ -58,16 +60,16 @@ function About() {
       <Header />
       <main className="p-5">
         <h2 className="text-center text-4xl">Metrics</h2>
-        <TimeFrame 
-          setTimeframe={setTimeframe} 
+        <TimeFrame
+          setTimeframe={setTimeframe}
           getSQLforTimeFrame={getSQLforTimeFrame}
           setRefreshTime={setRefreshTime}
           refreshTime={refreshTime}
           setTimeSinceUpdate={setTimeSinceUpdate}
           timeSinceUpdate={timeSinceUpdate}
           setRefreshClicked={setRefreshClicked}
-          /> 
-        {(isDataEmpty) 
+          />
+        {(isDataEmpty)
           ?  <div className="flex container justify-center mt-5">
               <h1 className="bg-yellow-300 p-3 rounded-lg">There are no available data points for this timeframe. Please select a wider timeframe.</h1>
             </div>

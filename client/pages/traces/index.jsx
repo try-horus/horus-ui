@@ -14,7 +14,7 @@ function About() {
 
   useEffect(() => {
     axios
-      .get(`http://ui-server:5001/traces?start=${start}&end=${end}`)
+      .get(`http://143.198.27.65:5001/traces?start=${start}&end=${end}`)
       .then(res => {
         setCount(res.data.count || 0);
         setTraces(res.data.traces || []);

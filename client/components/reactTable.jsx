@@ -135,7 +135,7 @@ const FilterComponent = ({ filterText, onFilter}) => (
 
     const handleRowClick = (e) => {
       const traceId = e.trace_id
-      const href = `http://ui-client:3000/traces/${traceId}`
+      const href = `http://143.198.27.65:3000/traces/${traceId}`
       router.push(href)
     }
 

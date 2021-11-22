@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 
 app.use('/rps-metric/', async (req, res, next) => {
   const timeframe = req.query.timeframe
-
+  console.log("RPS METRIC " + timeframe)
   if (!timeframe) {
     res.status(404).send("You must provide a given timeframe")
   } else {
@@ -47,9 +47,10 @@ app.use('/rps-metric/', async (req, res, next) => {
     res.status(200).send(formattedResults)
   }
 });
- 
-app.use('/rps-error/', async (req, res, next) => {  
+
+app.use('/rps-error/', async (req, res, next) => {
   const timeframe = req.query.timeframe
+  console.log("RPS ERROR " + timeframe)
   if (!timeframe) {
     res.status(404).send("You must provide a given timeframe")
   } else {
@@ -59,8 +60,9 @@ app.use('/rps-error/', async (req, res, next) => {
   }
 });
 
-app.use('/latency/', async (req, res, next) => {  
+app.use('/latency/', async (req, res, next) => {
   const timeframe = req.query.timeframe
+  console.log("LATENCY " + timeframe)
   if (!timeframe) {
     res.status(404).send("You must provide a given timeframe")
   } else {
@@ -76,7 +78,7 @@ app.get('/traces/', async (req, res, next) => {
   const end = req.query.end;
   const resultObj = {};
 
-  if (start === "undefined" || end === "undefined") return 
+  if (start === "undefined" || end === "undefined") return
 
   const selectQueryString = `SELECT * FROM traces WHERE trace_start_time BETWEEN '${start}' AND '${end}' ORDER BY trace_start_time desc;`;
 
@@ -105,7 +107,7 @@ app.get('/traces/:traceId', async (req, res) => {
 
   res.json(sortedArrayOfSpans)
 })
-  
+
 // Error Handling
 app.use((req, res, next) => {
   const error = new Error("Could not find this route.", 404);
