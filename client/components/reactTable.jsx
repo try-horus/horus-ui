@@ -82,7 +82,7 @@ const FilterComponent = ({ filterText, onFilter}) => (
       aria-label="Search Input"
 			value={filterText}
 			onChange={onFilter}
-      className="flex divide-x divide-gray-200 rounded-md shadow-lg p-3 mr-2"
+      className="flex divide-x divide-gray-200 rounded-md shadow-lg pr-6 p-3 mr-2 font-body text-gray-500 focus:outline-none focus:ring focus:ring-horusViolet"
     ></input>
 	</>
 );
@@ -109,8 +109,8 @@ const FilterComponent = ({ filterText, onFilter}) => (
 
     const TableHeader = () => {
       return (
-          <div className="flex items-center ml-16 mr-16 pt-16">
-            <h2 className="font-head text-horusBlue text-center text-7xl">Traces</h2>
+          <div className="flex items-center ml-16 mr-16 pt-16 mb-10">
+            <h1 className="font-head text-horusBlue text-center text-7xl">Traces</h1>
             <span className="w-full"></span>
             <FilterComponent onFilter={onFilter} filterText={filterText} />
           </div>

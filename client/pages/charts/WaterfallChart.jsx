@@ -12,10 +12,10 @@ const data = {
 */
 
 const WaterfallChart = ({ labels, datasets, handleClickOnChart }) => {
-  console.log(datasets)
   const options = {
     type: 'bar',
     aspectRatio: 2,
+    maintainAspectRatio: false,
     indexAxis: 'y',
     plugins:{   
       legend: {
@@ -72,7 +72,7 @@ const WaterfallChart = ({ labels, datasets, handleClickOnChart }) => {
     datasets,
   }
 
-  return <Bar data={data} options={options} />
+  return <Bar data={data} options={options}/>
 }
 
 export default WaterfallChart

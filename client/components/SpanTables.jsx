@@ -3,7 +3,7 @@ import SpanInfoTable from "./SpanInfoTable"
 import SpanAttributesTable from "./SpanAttributesTable"
 
 
-const SpanTables = ({ span }) => {
+const SpanTables = ({ span, closeEvent }) => {
   const [spanWithoutAttributes, setSpanWithoutAttributes] = useState([])
   const [arrayOfSpanAttributes, setArrayOfSpanAttributes] = useState([])
 
@@ -49,10 +49,18 @@ const SpanTables = ({ span }) => {
   };
 
   return (
-    <div className="pl-7 shadow-xl rounded-sm h-full w-full max-h-96 overflow-y-scroll">
-      <SpanInfoTable span={spanWithoutAttributes} style={customStyles} />
-      <SpanAttributesTable attributes={arrayOfSpanAttributes} style={customStyles}/>
-    </div>
+    <>
+      <div className="pl-7 shadow-xl rounded-sm h-full w-full max-h-96 overflow-y-scroll">
+        <SpanInfoTable span={spanWithoutAttributes} style={customStyles} />
+        <SpanAttributesTable attributes={arrayOfSpanAttributes} style={customStyles}/>
+      </div>
+      <div className="grid place-items-center">
+        <button 
+          className="text-horusViolet shadow-lg bg-white rounded-full pr-3 pl-3 pb-1 mt-5 border-gray-300 items-center"
+          onClick={() => closeEvent(false)}
+          >x</button>
+      </div>
+    </>
   )
 }
 

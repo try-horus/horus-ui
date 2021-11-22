@@ -8,12 +8,13 @@ module.exports = {
       colors: {
         horusBlue: '#081b53',
         horusYellow: '#FFdf6c',
-        horusViolet: '#b983FF'
+        horusViolet: '#b983FF',
+        horusTurquoise : '#06dfd7'
       },
       fontFamily: {
         'head': ['Rubik'],
         'body': ['Roboto']
-      }
+      },
     },
   },
   variants: {

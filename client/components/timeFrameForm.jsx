@@ -17,7 +17,7 @@ function TimeFrame({ setTimeframe, getSQLforTimeFrame, setRefreshTime, refreshTi
   
   return (
     <>
-      <div className="p-16 flex items-center">
+      <div className="p-16 mt-12 flex items-center">
         <h1 className="text-left font-head text-horusBlue text-7xl">Metrics</h1>
         <span className="w-3/4"></span>
         <div >
@@ -30,8 +30,8 @@ function TimeFrame({ setTimeframe, getSQLforTimeFrame, setRefreshTime, refreshTi
             </button>
             <form className="font-body" action="#">
               <label for="timeframe"></label>
-              <select className="bg-white pl-2 pr-20" name="timeframe" id="timeframe" onChange={(e) => handleTimeFrameSelect(e)} >
-                <option value="15 minutes">15 minutes</option>
+              <select className="bg-white pl-2 pr-20 text-gray-500 font-body" name="timeframe" id="timeframe" onChange={(e) => handleTimeFrameSelect(e)} >
+                <option className=""value="15 minutes">15 minutes</option>
                 <option value="1 hour">1 hour</option>
                 <option value="4 hours">4 hours</option>
                 <option value="24 hours">24 hours</option>
