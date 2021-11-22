@@ -15,8 +15,6 @@ const WaterfallChart = ({ labels, datasets, handleClickOnChart }) => {
   console.log(datasets)
   const options = {
     type: 'bar',
-    // responsive: true,
-    // maintainAspectRatio: false,
     aspectRatio: 2,
     indexAxis: 'y',
     plugins:{   
@@ -29,14 +27,30 @@ const WaterfallChart = ({ labels, datasets, handleClickOnChart }) => {
         title: {
           display: true,
           text: 'Span Duration (microseconds)',
-          font: {size: 18}
+          font: {
+            size: 12,
+            family: "Roboto" 
+          }
+        },
+        ticks: {
+          font: {
+            family: "Roboto"
+          }
         }
       },
       y: {
         title: {
           display: true,
-          text: 'Span Name',
-          font: {size: 18}
+          text: '',
+          font: {
+            size: 18,
+            family: "Roboto" 
+          }
+        },
+        ticks: {
+          font: {
+            family: "Roboto"
+          }
         }
       },
     },

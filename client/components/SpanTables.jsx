@@ -26,13 +26,17 @@ const SpanTables = ({ span }) => {
         fontSize: '20px',
         fontWeight: '500',
         textTransform: 'uppercase',
-        paddingLeft: '0 8px'
+        paddingLeft: '0 8px',
+        fontFamily: 'Rubik',
+        color: '#081b53',
       },
     },
     cells: {
       style: {
         fontSize: '13px',
         paddingLeft: '0 20px',
+        fontFamily: 'Roboto',
+        color: '#081b53',
       },
     },
     tableWrapper: {
@@ -45,7 +49,7 @@ const SpanTables = ({ span }) => {
   };
 
   return (
-    <div className="pl-7 shadow-xl h-full w-full pr-4 max-h-96 overflow-y-scroll">
+    <div className="pl-7 shadow-xl rounded-sm h-full w-full max-h-96 overflow-y-scroll">
       <SpanInfoTable span={spanWithoutAttributes} style={customStyles} />
       <SpanAttributesTable attributes={arrayOfSpanAttributes} style={customStyles}/>
     </div>

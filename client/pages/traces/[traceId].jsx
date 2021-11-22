@@ -52,8 +52,6 @@ const oneTrace = () => {
   }, [listOfSortedSpans]);
 
   useEffect(() => {
-    console.log(listOfSortedSpans)
-
     if (listOfFilteredSpans.length === 0) return
     setClickedSpan(listOfFilteredSpans[0])
 
@@ -114,7 +112,6 @@ const oneTrace = () => {
   }
 
   const selectSpansBasedOnDropdown = () => {
-    console.log(filterOfSpans)
     if (filterOfSpans === "HTTP Spans") {
       const httpSpans = listOfSortedSpans.filter(span => span["instrumentation_library"].includes("http"))
       setListOfFilteredSpans(httpSpans)
@@ -132,8 +129,8 @@ const oneTrace = () => {
       <Breadcrumb page={"singleTrace"}/>
       <main className="p-5" height="1000px">
         <IndividualTraceHeader traceId={traceId} handleFilteringOfSpans={handleFilteringOfSpans} />
-        <div className="mt-5 flex h-full w-full items-center">
-          <div className={`${showSpanInfo ? "w-1/2" : "w-full"} mr-4`}>
+        <div className="mt-5 flex h-full w-full items-center transition-all ease-in-out">
+          <div className={`shadow-lg rounded-sm duration-1000 ${showSpanInfo ? "w-1/2" : "w-full"} mr-4`}>
             <WaterfallChart
                 labels={labels}
                 datasets={datasets}
@@ -141,7 +138,7 @@ const oneTrace = () => {
                 className="w-1/2"
             />
           </div>
-          <div className={`w-1/2 ${showSpanInfo ? "" : "hidden"}`}>
+          <div className={`duration-1000 ${showSpanInfo ? "w-1/2" : " hidden" }`}>
             <SpanTables span={clickedSpan}/>
           </div>
         </div>
@@ -151,5 +148,3 @@ const oneTrace = () => {
 };
 
 export default oneTrace;
-
-//         <SpanTables span={clickedSpan} />
