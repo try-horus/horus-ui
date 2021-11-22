@@ -6,9 +6,9 @@ const formatEPSMetrics = (errorRows) => {
   })
 
   return [
-    {
+        {
       "id": "Errors Per Second",
-      "color": "hsla(0, 100%, 45%, 1)",
+      "color": "hsl(0, 100%, 70%)",
       "data": newData
     }
   ]
