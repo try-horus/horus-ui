@@ -9,19 +9,13 @@ function About() {
   const [ traces, setTraces ] = useState([]);
   const [ count, setCount ] = useState(0);
 
-  const [serverURL, setServerURL] = useState("localhost")
-
-  useEffect(async () => {
-    setServerURL(window.location.hostname)
-  }, [])
-
   const router = useRouter();
   const start = router.query.start;
   const end = router.query.end;
 
   useEffect(() => {
     axios
-      .get(`http://${serverURL}:5001/traces?start=${start}&end=${end}`)
+      .get(`http://${window.location.hostname}:5001/traces?start=${start}&end=${end}`)
       .then(res => {
         setCount(res.data.count || 0);
         setTraces(res.data.traces || []);

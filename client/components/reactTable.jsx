@@ -107,12 +107,7 @@ export const Filtering = ({data}) => {
 
   const [filterText, setFilterText] = useState('');
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-  const [serverURL, setServerURL] = useState("localhost")
-
-  useEffect(async () => {
-    setServerURL(window.location.hostname)
-  }, [])
-
+ 
   const filteredItems = data.filter(
     item => {
       let searchTerm = filterText.toLowerCase()
@@ -141,7 +136,7 @@ export const Filtering = ({data}) => {
 
   const handleRowClick = (e) => {
     const traceId = e.trace_id
-    const href = `http://${serverURL}:3000/traces/${traceId}`
+    const href = `http://${window.location.hostname}:3000/traces/${traceId}`
     router.push(href)
   }
 
