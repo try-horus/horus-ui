@@ -29,7 +29,7 @@ These are used in the connecting string in `server/index.js` to connect to the d
 `client/next.config.js` is dependent on an `.env` file that contains the following variables:
 
 ```env
-UI_SERVER_HOST=   # local host if running locally, IP address if online, or name of docker container in a network
-UI_CLIENT_HOST=   # local host if running locally, IP address if online, or name of docker container in a network
+UI_SERVER_HOST=   # localhost if running locally, IP address if online, or name of docker container in a network
+UI_CLIENT_HOST=   # localhost if running locally, IP address if online, or name of docker container in a network
 ```
 > Note: if you add more variables in `client/.env` (or change the names of the variables), you need to update both the `client/.env` and the `client/next.config.js` files for those changes to take full effect. 

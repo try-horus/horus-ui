@@ -34,11 +34,17 @@ const oneTrace = () => {
   const [listOfFilteredSpans, setListOfFilteredSpans] = useState([])
   const [filterOfSpans, setFilterOfSpans] = useState("All Spans")
 
+  const [serverURL, setServerURL] = useState("localhost")
+
+  useEffect(async () => {
+    setServerURL(window.location.hostname)
+  }, [])
+
   useEffect(async () => {
     if (!router.isReady) return;
 
     try {
-      let response = await axios.get(`http://143.198.27.65:5001/traces/${traceId}`);
+      let response = await axios.get(`http://${serverURL}:5001/traces/${traceId}`);
       response = response.data;
       setListOfSortedSpans(response);
       //setClickedSpan(response[0]);

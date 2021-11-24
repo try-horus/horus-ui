@@ -16,6 +16,12 @@ function About() {
   const [ refreshClicked, setRefreshClicked ] = useState(false)
   const [ isDataEmpty, setIsDataEmpty ] = useState(true)
 
+  const [serverURL, setServerURL] = useState("localhost")
+
+  useEffect(async () => {
+    setServerURL(window.location.hostname)
+  }, [])
+
   useEffect(() => {
     getSQLforTimeFrame()
     let interval = setInterval(() => {
@@ -36,7 +42,7 @@ function About() {
 
   const SQLRPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://143.198.27.65:5001/rps-metric?timeframe=${query}`)
+    const response = await axios.get(`http://${serverURL}:5001/rps-metric?timeframe=${query}`)
     console.log("getSQLforTimeFrame")
     console.log(response)
     setIsDataEmpty(response.data[0].data.length === 0)
@@ -45,13 +51,13 @@ function About() {
 
   const SQLEPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://143.198.27.65:5001/rps-error?timeframe=${query}`)
+    const response = await axios.get(`http://${serverURL}:5001/rps-error?timeframe=${query}`)
     setEPSData(response.data)
   }
 
   const SQLLatency = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://143.198.27.65:5001/latency?timeframe=${query}`)
+    const response = await axios.get(`http://${serverURL}:5001/latency?timeframe=${query}`)
     setLatencyData(response.data)
   }
 

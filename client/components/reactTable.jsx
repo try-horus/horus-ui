@@ -1,5 +1,5 @@
 import DataTable from 'react-data-table-component';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router'
 
@@ -102,58 +102,64 @@ const FilterComponent = ({ filterText, onFilter}) => (
 	</>
 );
 
-  export const Filtering = ({data}) => {
-    const router = useRouter()
+export const Filtering = ({data}) => {
+  const router = useRouter()
 
-    const [filterText, setFilterText] = useState('');
-    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-    const filteredItems = data.filter(
-      item => {
-        let searchTerm = filterText.toLowerCase()
-          return (
-            item.trace_id.toLowerCase().includes(searchTerm) ||
-            String(item.root_span_host).includes(searchTerm) ||
-            item.root_span_http_method.toLowerCase().includes(searchTerm) ||
-            item.root_span_endpoint.toLowerCase().includes(searchTerm)  ||
-            String(item.trace_latency).includes(searchTerm) ||
-            String(item.contains_errors).includes(searchTerm))
+  const [filterText, setFilterText] = useState('');
+  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const [serverURL, setServerURL] = useState("localhost")
+
+  useEffect(async () => {
+    setServerURL(window.location.hostname)
+  }, [])
+
+  const filteredItems = data.filter(
+    item => {
+      let searchTerm = filterText.toLowerCase()
+        return (
+          item.trace_id.toLowerCase().includes(searchTerm) ||
+          String(item.root_span_host).includes(searchTerm) ||
+          item.root_span_http_method.toLowerCase().includes(searchTerm) ||
+          item.root_span_endpoint.toLowerCase().includes(searchTerm)  ||
+          String(item.trace_latency).includes(searchTerm) ||
+          String(item.contains_errors).includes(searchTerm))
+    }
+  );
+
+  const handleClear = () => {
+      if (filterText) {
+        setResetPaginationToggle(!resetPaginationToggle);
+        setFilterText('');
       }
-    );
+  };
 
-    const handleClear = () => {
-        if (filterText) {
-          setResetPaginationToggle(!resetPaginationToggle);
-          setFilterText('');
-        }
-    };
-
-    const returnFilteredComponent = () => {
-      return (
-        <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
-      )
-    }
-
-    const handleRowClick = (e) => {
-      const traceId = e.trace_id
-      const href = `http://143.198.27.65:3000/traces/${traceId}`
-      router.push(href)
-    }
-
+  const returnFilteredComponent = () => {
     return (
-      <>
-        <DataTable
-            columns={columns}
-            data={filteredItems}
-            pagination
-            subHeader
-            subHeaderComponent={returnFilteredComponent()}
-            dense
-            onRowClicked={handleRowClick}
-            className="rounded-lg"
-            customStyles={customStyles}
-        />
-      </>
-    );
+      <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+    )
+  }
+
+  const handleRowClick = (e) => {
+    const traceId = e.trace_id
+    const href = `http://${serverURL}:3000/traces/${traceId}`
+    router.push(href)
+  }
+
+  return (
+    <>
+      <DataTable
+          columns={columns}
+          data={filteredItems}
+          pagination
+          subHeader
+          subHeaderComponent={returnFilteredComponent()}
+          dense
+          onRowClicked={handleRowClick}
+          className="rounded-lg"
+          customStyles={customStyles}
+      />
+    </>
+  );
 };
 
 export default Filtering
