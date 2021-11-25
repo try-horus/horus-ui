@@ -87,61 +87,59 @@ const FilterComponent = ({ filterText, onFilter}) => (
 	</>
 );
 
-  export const Filtering = ({data}) => {
-    const router = useRouter()
-    const [filterText, setFilterText] = useState('');
-    const filteredItems = data.filter(
-      item => {
-        let searchTerm = filterText.toLowerCase()
-          return (
-            item.trace_id.toLowerCase().includes(searchTerm) ||
-            String(item.root_span_host).includes(searchTerm) ||
-            item.root_span_http_method.toLowerCase().includes(searchTerm) ||
-            item.root_span_endpoint.toLowerCase().includes(searchTerm)  ||
-            String(item.trace_latency).includes(searchTerm) ||
-            String(item.contains_errors).includes(searchTerm))
-      }
-    );
-    
-    function onFilter(e) {
-      setFilterText(e.target.value)
-    }
-
-    const TableHeader = () => {
-      return (
-          <div className="flex items-center ml-16 mr-16 pt-16 mb-10">
-            <h1 className="font-head text-horusBlue text-center text-7xl">Traces</h1>
-            <span className="w-full"></span>
-            <FilterComponent onFilter={onFilter} filterText={filterText} />
-          </div>
-      )
+export const Filtering = ({data}) => {
+  const router = useRouter()
+  const [filterText, setFilterText] = useState('');
+  const filteredItems = data.filter(
+    item => {
+      let searchTerm = filterText.toLowerCase()
+        return (
+          item.trace_id.toLowerCase().includes(searchTerm) ||
+          String(item.root_span_host).includes(searchTerm) ||
+          item.root_span_http_method.toLowerCase().includes(searchTerm) ||
+          item.root_span_endpoint.toLowerCase().includes(searchTerm)  ||
+          String(item.trace_latency).includes(searchTerm) ||
+          String(item.contains_errors).includes(searchTerm))
     }
   );
+  
+  function onFilter(e) {
+    setFilterText(e.target.value)
+  }
 
-    const handleRowClick = (e) => {
-      const traceId = e.trace_id
-      const href = `${process.env.UI_CLIENT_HOST}/traces/${traceId}`
-      router.push(href)
-    }
-
-  const returnFilteredComponent = () => {
+  const TableHeader = () => {
     return (
-      <>
-        {TableHeader()}
-        <div className="ml-5 mr-5">
-        <DataTable
-            columns={columns}
-            data={filteredItems}
-            pagination
-            dense
-            onRowClicked={handleRowClick}
-            className="rounded-lg"
-            customStyles={customStyles}
-            striped={true}
-        />
+        <div className="flex items-center ml-16 mr-16 pt-16 mb-10">
+          <h1 className="font-head text-horusBlue text-center text-7xl">Traces</h1>
+          <span className="w-full"></span>
+          <FilterComponent onFilter={onFilter} filterText={filterText} />
         </div>
-      </>
-    );
+    )
+  }
+
+  const handleRowClick = (e) => {
+    const traceId = e.trace_id
+    const href = `${process.env.UI_CLIENT_HOST}/traces/${traceId}`
+    router.push(href)
+  }
+
+  return (
+    <>
+      {TableHeader()}
+      <div className="ml-5 mr-5">
+      <DataTable
+          columns={columns}
+          data={filteredItems}
+          pagination
+          dense
+          onRowClicked={handleRowClick}
+          className="rounded-lg"
+          customStyles={customStyles}
+          striped={true}
+      />
+      </div>
+    </>
+  );
 };
 
 export default Filtering
