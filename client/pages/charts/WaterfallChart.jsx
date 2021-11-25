@@ -12,12 +12,10 @@ const data = {
 */
 
 const WaterfallChart = ({ labels, datasets, handleClickOnChart }) => {
-  console.log(datasets)
   const options = {
     type: 'bar',
-    // responsive: true,
-    // maintainAspectRatio: false,
     aspectRatio: 2,
+    maintainAspectRatio: false,
     indexAxis: 'y',
     plugins:{   
       legend: {
@@ -29,28 +27,41 @@ const WaterfallChart = ({ labels, datasets, handleClickOnChart }) => {
         title: {
           display: true,
           text: 'Span Duration (microseconds)',
-          font: {size: 18}
+          font: {
+            size: 12,
+            family: "Roboto" 
+          }
+        },
+        ticks: {
+          font: {
+            family: "Roboto"
+          }
         }
       },
       y: {
         title: {
           display: true,
-          text: 'Span Name',
-          font: {size: 18}
+          text: '',
+          font: {
+            size: 18,
+            family: "Roboto" 
+          }
+        },
+        ticks: {
+          font: {
+            family: "Roboto"
+          }
         }
       },
     },
     skipNull: true,
   
     backgroundColor: [
-      'rgba(54, 127, 143, 1)',
-      'rgba(73, 173, 175, 1)',
-      'rgba(104, 194, 191, 1)',
-      'rgba(242, 188, 70, 1)',
-      'rgba(228, 135, 76, 1)',
-      'rgba(223, 86, 77, 1)',
-      'rgba(243, 224, 181, 1)',
-      'rgba(39, 29, 63, 1)',
+      "rgba(185, 131, 255, 1)",
+      "rgba(6, 223, 215, 1)",
+      "rgba(255, 100, 100, 1)", 
+      "rgba(196, 251, 110, 1)",
+      "rgba(255, 223, 108, 1)"
     ],
   
     onClick: handleClickOnChart
@@ -61,7 +72,7 @@ const WaterfallChart = ({ labels, datasets, handleClickOnChart }) => {
     datasets,
   }
 
-  return <Bar data={data} options={options} />
+  return <Bar data={data} options={options}/>
 }
 
 export default WaterfallChart

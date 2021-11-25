@@ -16,8 +16,6 @@ function About() {
   const [ refreshClicked, setRefreshClicked ] = useState(false)
   const [ isDataEmpty, setIsDataEmpty ] = useState(true)
 
- 
-
   useEffect(() => {
     getSQLforTimeFrame()
     let interval = setInterval(() => {
@@ -38,42 +36,39 @@ function About() {
 
   const SQLRPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://${window.location.hostname}:5001/rps-metric?timeframe=${query}`)
-    console.log("getSQLforTimeFrame")
-    console.log(response)
+    const response = await axios.get(`${process.env.UI_SERVER_HOST}/rps-metric?timeframe=${query}`)
     setIsDataEmpty(response.data[0].data.length === 0)
     setRPSData(response.data)
   }
 
   const SQLEPS = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://${window.location.hostname}:5001/rps-error?timeframe=${query}`)
+    const response = await axios.get(`${process.env.UI_SERVER_HOST}/rps-error?timeframe=${query}`)
     setEPSData(response.data)
   }
 
   const SQLLatency = async (timeframe) => {
     const query = timeframe.replace(" ", "-")
-    const response = await axios.get(`http://${window.location.hostname}:5001/latency?timeframe=${query}`)
+    const response = await axios.get(`${process.env.UI_SERVER_HOST}/latency?timeframe=${query}`)
     setLatencyData(response.data)
   }
 
   return (
     <>
-      <Header />
-      <main className="p-5">
-        <h2 className="text-center text-4xl">Metrics</h2>
-        <TimeFrame
-          setTimeframe={setTimeframe}
+      <main className="w-full pb-10">
+          <Header />
+          <TimeFrame 
+          setTimeframe={setTimeframe} 
           getSQLforTimeFrame={getSQLforTimeFrame}
           setRefreshTime={setRefreshTime}
           refreshTime={refreshTime}
           setTimeSinceUpdate={setTimeSinceUpdate}
           timeSinceUpdate={timeSinceUpdate}
           setRefreshClicked={setRefreshClicked}
-          />
-        {(isDataEmpty)
-          ?  <div className="flex container justify-center mt-5">
-              <h1 className="bg-yellow-300 p-3 rounded-lg">There are no available data points for this timeframe. Please select a wider timeframe.</h1>
+          /> 
+        {(isDataEmpty) 
+          ?  <div className="flex justify-center mb-20">
+              <h1 className="bg-horusYellow p-3 rounded-lg">There are no available data points for this timeframe. Please select a wider timeframe.</h1>
             </div>
           : null
         }
@@ -83,6 +78,7 @@ function About() {
           latencyData={latencyData}
           />
       </main>
+      <footer className="bg-horusBlue"></footer>
    </>
   )
 }

@@ -1,6 +1,5 @@
 import WaterfallChart from "../charts/WaterfallChart.jsx";
-import ButtonToGoBack from "../../components/ButtonToGoBack";
-import ButtonToFilterTraces from "../../components/ButtonToFilterTraces";
+import Breadcrumb from "../../components/Breadcrumb"
 import SpanTables from "../../components/SpanTables";
 import Header from "../../components/pageHeader";
 
@@ -32,16 +31,16 @@ const oneTrace = () => {
   const [listOfSortedSpans, setListOfSortedSpans] = useState([]);
   const [clickedSpan, setClickedSpan] = useState({});
   const [listOfFilteredSpans, setListOfFilteredSpans] = useState([])
-  const [filterOfSpans, setFilterOfSpans] = useState("All Spans")
+  const [filterOfSpans, setFilterOfSpans] = useState("HTTP Spans")
+  const [showSpanInfo, setShowSpanInfo] = useState(false)
 
   useEffect(async () => {
     if (!router.isReady) return;
 
     try {
-      let response = await axios.get(`http://${window.location.hostname}:5001/traces/${traceId}`);
+      let response = await axios.get(`${process.env.UI_SERVER_HOST}/traces/${traceId}`);
       response = response.data;
       setListOfSortedSpans(response);
-      //setClickedSpan(response[0]);
     } catch (e) {
       console.log(e);
     }
@@ -49,11 +48,10 @@ const oneTrace = () => {
 
   useEffect(() => {
     setListOfFilteredSpans(listOfSortedSpans)
+    selectSpansBasedOnDropdown()
   }, [listOfSortedSpans]);
 
   useEffect(() => {
-    console.log(listOfSortedSpans)
-
     if (listOfFilteredSpans.length === 0) return
     setClickedSpan(listOfFilteredSpans[0])
 
@@ -97,8 +95,23 @@ const oneTrace = () => {
   }, [listOfFilteredSpans]);
 
   useEffect(() => {
-    console.log(listOfSortedSpans)
     // set listOfFilteredSpans to the result of filtering the listOfSortedSpans
+    selectSpansBasedOnDropdown()
+  }, [filterOfSpans]);
+
+  const handleClickOnChart = (event, arrayOfInfo) => {
+    if (arrayOfInfo[0] !== undefined) {
+      const index = arrayOfInfo[0]["index"];
+      setClickedSpan(listOfSortedSpans[index]);
+      setShowSpanInfo(true)
+    }
+  };
+
+  const handleFilteringOfSpans = (e) => {
+    setFilterOfSpans(e.target.value)
+  }
+
+  const selectSpansBasedOnDropdown = () => {
     if (filterOfSpans === "HTTP Spans") {
       const httpSpans = listOfSortedSpans.filter(span => span["instrumentation_library"].includes("http"))
       setListOfFilteredSpans(httpSpans)
@@ -108,35 +121,27 @@ const oneTrace = () => {
     } else {
       setListOfFilteredSpans(listOfSortedSpans)
     }
-  }, [filterOfSpans]);
-
-  const handleClickOnChart = (event, arrayOfInfo) => {
-    if (arrayOfInfo[0] !== undefined) {
-      const index = arrayOfInfo[0]["index"];
-      setClickedSpan(listOfSortedSpans[index]);
-    }
-  };
-
-  const handleFilteringOfSpans = (e) => {
-    setFilterOfSpans(e.target.value)
   }
 
   return (
     <div>
       <Header />
+      <Breadcrumb page={"singleTrace"}/>
       <main className="p-5" height="1000px">
-        <h2 className="text-center text-4xl mb-10">Single Trace Breakdown</h2>
         <IndividualTraceHeader traceId={traceId} handleFilteringOfSpans={handleFilteringOfSpans} />
-        <div className="mt-5 flex h-full w-full">
-          <div className="bg-white p-5 mr-0 h-full w-full">
+        <div className="mt-5 flex h-full w-full items-center transition-all">
+          <div className={`duration-1000 ${showSpanInfo ? "w-1/2" : "w-full"} mr-4`}>
             <WaterfallChart
-              labels={labels}
-              datasets={datasets}
-              handleClickOnChart={handleClickOnChart}
+                labels={labels}
+                datasets={datasets}
+                handleClickOnChart={handleClickOnChart}
+                className="w-1/2"
             />
           </div>
+          <div className={`duration-1000 ease-in-out ${showSpanInfo ? "w-1/2" : "w-0 opacity-0"}`}>
+            <SpanTables span={clickedSpan} closeEvent={setShowSpanInfo}/>
+          </div>
         </div>
-        <SpanTables span={clickedSpan} />
       </main>
     </div>
   );

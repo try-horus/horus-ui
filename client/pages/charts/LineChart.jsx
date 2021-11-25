@@ -21,15 +21,40 @@ const LineChart = ({ data , style, chartName }) => {
     const handleDataClick = (point) => {
         const [start, end] = createQueryDatesStrings(point.data.xFormatted)
         console.log(start, end)
-        const href = `http://${window.location.url}:3000/traces?start=${start}&end=${end}`
+        const href = `${process.env.UI_CLIENT_HOST}/traces?start=${start}&end=${end}`
         router.push(href)
     }
 
+    const latencyLegend = {
+        anchor: 'top-right',
+        direction: 'column',
+        justify: false,
+        translateX: 100,
+        translateY: 0,
+        itemsSpacing: 0,
+        itemDirection: 'left-to-right',
+        itemWidth: 70,
+        itemHeight: 20,
+        itemOpacity: 0.75,
+        symbolSize: 12,
+        symbolShape: 'circle',
+        symbolBorderColor: 'rgba(0, 0, 0, .5)',
+        effects: [
+            {
+                on: 'hover',
+                style: {
+                    itemBackground: 'rgba(0, 0, 0, .03)',
+                    itemOpacity: 1
+                }
+            }
+        ]
+    }
 
     return (
-      <div className="container justify-center p-5 pb-16 mb-14" style={{ height: 600 }}>
-        <h1 className="bg-blue-300 p-3 text-center rounded-lg text-xl">{chartName}</h1>
+      <div className="justify-center pl-12 pb-14 mb-14" style={{height: 600}}>
+        <h1 className="font-head text-horusBlue text-left rounded-lg text-4xl">{chartName}</h1>
         <ResponsiveLine
+        theme={{fontFamily: "Roboto"}}
         data={data}
         margin={{ top: 50, right: 170, bottom: 50, left: 60 }}
         xScale={{ format: "%Y-%m-%dT%H:%M:%S.%L%Z", type: "time" }}
@@ -44,7 +69,8 @@ const LineChart = ({ data , style, chartName }) => {
             tickValues: 6,
             legend: 'Time',
             legendOffset: 40,
-            legendPosition: 'middle'
+            legendPosition: 'middle',
+            fontFamily: 'Rubik'
         }}
         axisLeft={{
             orient: 'left',
@@ -52,7 +78,7 @@ const LineChart = ({ data , style, chartName }) => {
             tickPadding: 5,
             tickRotation: 0,
             legend: 'Count',
-            legendOffset: -40,
+            legendOffset: -50,
             legendPosition: 'middle'
         }}
         onClick={(point) => handleDataClick(point)}
@@ -78,32 +104,9 @@ const LineChart = ({ data , style, chartName }) => {
             }
         }
         useMesh={true}
-        legends={[
-            {
-                anchor: 'top-right',
-                direction: 'column',
-                justify: false,
-                translateX: 100,
-                translateY: 0,
-                itemsSpacing: 0,
-                itemDirection: 'left-to-right',
-                itemWidth: 70,
-                itemHeight: 20,
-                itemOpacity: 0.75,
-                symbolSize: 12,
-                symbolShape: 'circle',
-                symbolBorderColor: 'rgba(0, 0, 0, .5)',
-                effects: [
-                    {
-                        on: 'hover',
-                        style: {
-                            itemBackground: 'rgba(0, 0, 0, .03)',
-                            itemOpacity: 1
-                        }
-                    }
-                ]
-            }
-        ]}
+        legends={
+            chartName === 'Latency Health' ? [latencyLegend] : []
+        }
       />
     </div>
   )
