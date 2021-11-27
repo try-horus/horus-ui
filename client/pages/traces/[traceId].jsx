@@ -38,7 +38,7 @@ const oneTrace = () => {
     if (!router.isReady) return;
 
     try {
-      let response = await axios.get(`${process.env.UI_SERVER_HOST}/traces/${traceId}`);
+      let response = await axios.get(`http://${window.location.hostname}:5001/traces/${traceId}`);
       response = response.data;
       setListOfSortedSpans(response);
     } catch (e) {

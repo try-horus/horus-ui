@@ -119,7 +119,7 @@ export const Filtering = ({data}) => {
 
   const handleRowClick = (e) => {
     const traceId = e.trace_id
-    const href = `${process.env.UI_CLIENT_HOST}/traces/${traceId}`
+    const href = `http://${window.location.hostname}:3000/traces/${traceId}`
     router.push(href)
   }
 

@@ -16,7 +16,7 @@ function About() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.UI_SERVER_HOST}/traces?start=${start}&end=${end}`)
+      .get(`http://${window.location.hostname}:5001/traces?start=${start}&end=${end}`)
       .then(res => {
         setCount(res.data.count || 0);
         setTraces(res.data.traces || []);
