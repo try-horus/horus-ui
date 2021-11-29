@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 
 const createQueryDatesStrings = (endTime) => {
     let end = new Date(endTime)
-    let userTimezoneOffset = end.getTimezoneOffset() * 60000;
-    end = new Date(end.getTime() - userTimezoneOffset)
+    //let userTimezoneOffset = end.getTimezoneOffset() * 60000;
+    //end = new Date(end.getTime() - userTimezoneOffset)
     let start = new Date(end - 10000)
     end = end.toISOString()
     start = start.toISOString()
