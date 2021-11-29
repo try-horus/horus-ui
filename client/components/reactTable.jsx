@@ -39,7 +39,7 @@ const columns = [
 const customStyles = {
   rows: {
     style: {
-      minHeight: '72px', // override the row height
+      minHeight: '72px', 
       "&:hover": {
         cursor: "pointer",
       }
@@ -92,6 +92,10 @@ export const Filtering = ({data}) => {
   const [filterText, setFilterText] = useState('');
   const filteredItems = data.filter(
     item => {
+      item.root_span_endpoint = item.root_span_endpoint || "—"
+      item.root_span_host = item.root_span_host || "—"
+      item.root_span_http_method = item.root_span_http_method || "Non-HTTP"
+
       let searchTerm = filterText.toLowerCase()
         return (
           item.trace_id.toLowerCase().includes(searchTerm) ||

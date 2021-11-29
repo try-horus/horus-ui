@@ -5,10 +5,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import axios from "axios";
 
-function About() {
-  const [ currentLink, setCurrentLink ] = useState(1);
+function AllTraces() {
   const [ traces, setTraces ] = useState([]);
-  const [ count, setCount ] = useState(0);
 
   const router = useRouter();
   const start = router.query.start;
@@ -18,7 +16,6 @@ function About() {
     axios
       .get(`http://${window.location.hostname}:5001/traces?start=${start}&end=${end}`)
       .then(res => {
-        setCount(res.data.count || 0);
         setTraces(res.data.traces || []);
       });
   }, [start, end]);
@@ -32,4 +29,4 @@ function About() {
   )
 }
 
-export default About;
+export default AllTraces;

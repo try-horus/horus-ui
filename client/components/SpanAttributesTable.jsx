@@ -24,8 +24,6 @@ const SpanAttributesTable = ({ attributes, style }) => {
   ]
 
   const data = attributesArray.map((obj, id) => {
-    // currently filters this one out as it makes the cells too wide. Not sure if this is necessary
-    // data.
     if (obj.key === "http.user_agent") {
       return {} 
     }

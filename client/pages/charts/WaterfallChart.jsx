@@ -1,16 +1,6 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-/*
-This is the format that the data object should have:
-const data = {
-  labels: ["span1", "span2", "span3", "span4", "span5"],
-  datasets: [{
-    data: [[0,50], [1,4], [4,14], [14,29], [29,50]]
-  }]
-}
-*/
-
 const WaterfallChart = ({ labels, datasets, handleClickOnChart }) => {
   const options = {
     type: 'bar',
