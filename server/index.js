@@ -11,9 +11,6 @@ const connectionString = `postgres://${process.env.POSTGRES_ADMIN}:${process.env
 
 const client = new Client(connectionString)
 
-//const connectionString = "postgres://juan:juan@localhost:5432/horus"
-// const connectionString = `postgres://horus_admin:horus_admin@localhost:5434/horus`
-
 client.connect()
   .then(() => console.log("Connected successfully to the database"))
   .catch(error => console.log(error))
@@ -38,7 +35,6 @@ app.get("/", (req, res) => {
 
 app.use('/rps-metric/', async (req, res, next) => {
   const timeframe = req.query.timeframe
-  console.log("RPS METRIC " + timeframe)
   if (!timeframe) {
     res.status(404).send("You must provide a given timeframe")
   } else {
@@ -50,7 +46,6 @@ app.use('/rps-metric/', async (req, res, next) => {
 
 app.use('/rps-error/', async (req, res, next) => {
   const timeframe = req.query.timeframe
-  console.log("RPS ERROR " + timeframe)
   if (!timeframe) {
     res.status(404).send("You must provide a given timeframe")
   } else {
@@ -62,7 +57,6 @@ app.use('/rps-error/', async (req, res, next) => {
 
 app.use('/latency/', async (req, res, next) => {
   const timeframe = req.query.timeframe
-  console.log("LATENCY " + timeframe)
   if (!timeframe) {
     res.status(404).send("You must provide a given timeframe")
   } else {

@@ -6,7 +6,7 @@ import Dashboard from "../components/Dashboard.jsx"
 
 import { useState, useEffect } from "react"
 
-function About() {
+function Metrics() {
   const [ timeFrame, setTimeframe ] = useState("15 minutes")
   const [ rpsData, setRPSData ] = useState(initialData)
   const [ epsData, setEPSData ] = useState(initialData)
@@ -16,6 +16,15 @@ function About() {
   const [ refreshClicked, setRefreshClicked ] = useState(false)
   const [ isDataEmpty, setIsDataEmpty ] = useState(true)
 
+  const initialData = [
+    {
+      "id": "initializing data",
+      "color": "hsl(65, 70%, 50%)",
+      "data": [
+      ]
+    }
+  ]
+  
   useEffect(() => {
     getSQLforTimeFrame()
     let interval = setInterval(() => {
@@ -83,13 +92,4 @@ function About() {
   )
 }
 
-const initialData = [
-  {
-    "id": "initializing data",
-    "color": "hsl(65, 70%, 50%)",
-    "data": [
-    ]
-  }
-]
-
-export default About
+export default Metrics;

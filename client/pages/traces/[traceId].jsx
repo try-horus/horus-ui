@@ -8,16 +8,6 @@ import { useState, useEffect } from "react";
 import IndividualTraceHeader from "../../components/individualTraceHeader.jsx";
 const axios = require("axios");
 
-/*
-  75bf3617b49cedcd16b62dafc2d4bec1 with these one there is a lot of delay before movies sends the response
-
-  1526e5df651c2312fb171516dda90a87 this more normal, movies receives the request from dashboard and sends
-  the response with a delay of 10 miliseconds. It still looks like a lot of delay
-
-  1e085415db8566562ea3a5d696a658c7 is a trace that has an error so the request never reaches movies.js
-
-  */
-
 const oneTrace = () => {
   const router = useRouter();
   const { traceId } = router.query;
@@ -52,19 +42,14 @@ const oneTrace = () => {
   }, [listOfSortedSpans]);
 
   useEffect(() => {
-    if (listOfFilteredSpans.length === 0) return
+    if (listOfFilteredSpans.length === 0) {
+      setDatasets([{ data: [] }])
+      return
+    }
     setClickedSpan(listOfFilteredSpans[0])
 
     if (listOfFilteredSpans !== undefined) {
       setLabels(listOfFilteredSpans.map((span) => span.span_name));
-
-      /*
-      Get the starting time of the trace as a variable
-      In all the spans, the first value will be
-      startingTimeOfTheSpan - startingTimeOfTheTrace
-      The second, upper value will be:
-      startingTimeOfTheSpan - startingTimeOfTheTrace + latency
-    */
     if (filterOfSpans !== "Non-HTTP Spans") {
       const latencyData = [];
       const startingTimeOfTheTrace =
@@ -92,10 +77,9 @@ const oneTrace = () => {
       
     }
 
-  }, [listOfFilteredSpans]);
+  }, [listOfFilteredSpans, filterOfSpans]);
 
   useEffect(() => {
-    // set listOfFilteredSpans to the result of filtering the listOfSortedSpans
     selectSpansBasedOnDropdown()
   }, [filterOfSpans]);
 
@@ -109,6 +93,7 @@ const oneTrace = () => {
 
   const handleFilteringOfSpans = (e) => {
     setFilterOfSpans(e.target.value)
+    selectSpansBasedOnDropdown()
   }
 
   const selectSpansBasedOnDropdown = () => {
@@ -129,19 +114,24 @@ const oneTrace = () => {
       <Breadcrumb page={"singleTrace"}/>
       <main className="p-5" height="1000px">
         <IndividualTraceHeader traceId={traceId} handleFilteringOfSpans={handleFilteringOfSpans} />
-        <div className="mt-5 flex h-full w-full items-center transition-all">
-          <div className={`duration-1000 ${showSpanInfo ? "w-1/2" : "w-full"} mr-4`}>
-            <WaterfallChart
-                labels={labels}
-                datasets={datasets}
-                handleClickOnChart={handleClickOnChart}
-                className="w-1/2"
-            />
-          </div>
-          <div className={`duration-1000 ease-in-out ${showSpanInfo ? "w-1/2" : "w-0 opacity-0"}`}>
-            <SpanTables span={clickedSpan} closeEvent={setShowSpanInfo}/>
-          </div>
-        </div>
+          {datasets[0].data.length === 0 
+            ? <div className="flex justify-center mb-20 mt-10">
+                <h1 className="bg-horusYellow p-3 rounded-lg">There are no HTTP Spans for this Trace. Please choose a different category of spans.</h1>
+              </div>
+            : <div className="mt-5 flex h-full w-full items-center transition-all">
+                <div className={`duration-1000 ${showSpanInfo ? "w-1/2" : "w-full"} mr-4`}>
+                  <WaterfallChart
+                      labels={labels}
+                      datasets={datasets}
+                      handleClickOnChart={handleClickOnChart}
+                      className="w-1/2"
+                  />
+                </div>
+                <div className={`duration-1000 ease-in-out ${showSpanInfo ? "w-1/2" : "w-0 opacity-0"}`}>
+                  <SpanTables span={clickedSpan} closeEvent={setShowSpanInfo}/>
+                </div>
+              </div>
+          }
       </main>
     </div>
   );
